@@ -29,7 +29,6 @@ class App extends Component {
     }
 
     //Index does not need to be managed as state, move this later? Should I move all the states to the board level?
-    //Keep a state of playerView versus Spymaster view, then toggle between the two with the button??
     this.state = {
       squares: shuffledBank,
       blueSquaresIndices: blueSquaresIndices,
@@ -70,14 +69,18 @@ class App extends Component {
 
   render() {
     let status;
+    var resetButton;
 
     let winner = calculateWinner(this.state.blueSquaresIndices, this.state.redSquaresIndices, this.state.selected, this.state.blueTurn, this.state.deathSquareIndex);
     if (winner) {
       status = winner + ' wins!';
+      resetButton = <button className='btn-primary' onClick={()=>window.location.reload()}>Reset Board for new game</button>;
     } else {
       status = status = 'Current Turn: ' + (this.state.blueTurn ? 'Blue' : 'Red');
       var fontColor = (this.state.blueTurn) ? '#3366FF' : '#CC3333';
     }
+
+
 
     let view = (this.state.playerView ? "Spymaster View" : "Player View");
 
@@ -103,13 +106,15 @@ class App extends Component {
             <div className="btn-group btn-group-sm">
               <button className = "btn-primary" onClick={()=>this.setState({playerView : !this.state.playerView})}>Change to {view}</button>
             </div>
+            <div>
+              {resetButton}
+            </div>
           </div>
         </div>
       </div>
     );
   }
 }
-
 
 function calculateWinner(blueSquares, redSquares, selectedSquares, blueTurn, deathSquareIndex){
   let winner = false;
