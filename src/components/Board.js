@@ -2,36 +2,35 @@ import React, { Component } from 'react';
 import '../App.css';
 import Square from './Square';
 
-class Board extends Component {
+function Board (props){
 
-  renderSquare(index, word) {
-    let highlightRed = this.props.redSquaresIndices.includes(index);
-    let highlightBlue = this.props.blueSquaresIndices.includes(index);
+  function renderSquare(index, word) {
+      let highlightRed = props.redSquaresIndices.includes(index);
+      let highlightBlue = props.blueSquaresIndices.includes(index);
 
-    return (
-      <Square
-        key={index}
-        value={word}
-        onClick={() => this.props.onClick(index)}
-        index={index}
-        highlightBlue = {highlightBlue}
-        highlightRed = {highlightRed}
-        selected = {this.props.selected}
-        deathSquareIndex = {this.props.deathSquareIndex}
-        playerView = {this.props.playerView}
-      />
-    );
-  }
+      return (
+        <Square
+          key={index}
+          value={word}
+          onClick={() => props.onClick(index)}
+          index={index}
+          highlightBlue = {highlightBlue}
+          highlightRed = {highlightRed}
+          selected = {props.selected}
+          deathSquareIndex = {props.deathSquareIndex}
+          playerView = {props.playerView}
+        />
+      );
+    }
 
-  render() {
     var rows = [];
     var cells = [];
     var cellNumber = 0;
-    const bank = this.props.bank;
+    const bank = props.bank;
 
     for (let row = 0; row < 5; row++){
       for (let col = 0; col < 5; col++){
-        cells.push(this.renderSquare(cellNumber, bank[cellNumber]));
+        cells.push(renderSquare(cellNumber, bank[cellNumber]));
         cellNumber++;
       }
       rows.push(<div key={row} className="board-row">{cells}</div>);
@@ -44,7 +43,9 @@ class Board extends Component {
         {rows}
       </div>
     );
-  }
 }
+
+
+
 
 export default Board;
