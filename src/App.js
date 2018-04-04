@@ -7,33 +7,28 @@ class App extends Component {
     super(props);
 
     //Move this to a DB to pull from?
-    //Score update
     const wordBank = require("./components/wordBank.js");
-    const shuffledBank = shuffle(wordBank).slice(0, 25);
+    this.squares = shuffle(wordBank).slice(0, 25);
     var availableIndices = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24];
-    var deathSquareIndex = Math.floor(Math.random()*availableIndices.length);
-    var blueSquaresIndices = [];
-    var redSquaresIndices = [];
+    this.deathSquareIndex = Math.floor(Math.random()*availableIndices.length);
+    this.blueSquaresIndices = [];
+    this.redSquaresIndices = [];
 
-    availableIndices = availableIndices.slice(0, deathSquareIndex).concat(availableIndices.slice(deathSquareIndex+1));
+    availableIndices = availableIndices.slice(0, this.deathSquareIndex).concat(availableIndices.slice(this.deathSquareIndex+1));
     for (let i=0; i<9; i++){
       var blueSquareIndex = Math.floor(Math.random()*availableIndices.length);
-      blueSquaresIndices.push(availableIndices[blueSquareIndex]);
+      this.blueSquaresIndices.push(availableIndices[blueSquareIndex]);
       availableIndices = availableIndices.slice(0, blueSquareIndex).concat(availableIndices.slice(blueSquareIndex+1));
     }
 
     for (let i=0; i<8; i++){
       var redSquareIndex = Math.floor(Math.random()*availableIndices.length);
-      redSquaresIndices.push(availableIndices[redSquareIndex]);
+      this.redSquaresIndices.push(availableIndices[redSquareIndex]);
       availableIndices = availableIndices.slice(0, redSquareIndex).concat(availableIndices.slice(redSquareIndex+1));
     }
 
     //Index does not need to be managed as state, move this later? Should I move all the states to the board level?
     this.state = {
-      squares: shuffledBank,
-      blueSquaresIndices: blueSquaresIndices,
-      redSquaresIndices: redSquaresIndices,
-      deathSquareIndex: deathSquareIndex,
       selected: new Set(),
       blueTurn: true,
       playerView: true,
@@ -43,20 +38,20 @@ class App extends Component {
   }
 
   handleClick(i) {
-    if (!this.state.playerView || calculateWinner(this.state.blueSquaresIndices, this.state.redSquaresIndices, this.state.selected, this.state.blueTurn, this.state.deathSquareIndex)){
+    if (!this.state.playerView || calculateWinner(this.blueSquaresIndices, this.redSquaresIndices, this.state.selected, this.state.blueTurn, this.deathSquareIndex)){
       return;
     }
 
-    if ((this.state.blueTurn && !this.state.blueSquaresIndices.includes(i)) ||
-      (!this.state.blueTurn && !this.state.redSquaresIndices.includes(i))) {
+    if ((this.state.blueTurn && !this.blueSquaresIndices.includes(i)) ||
+      (!this.state.blueTurn && !this.redSquaresIndices.includes(i))) {
         this.setState({blueTurn: !this.state.blueTurn});
     }
 
-    if (this.state.blueSquaresIndices.includes(i)){
+    if (this.blueSquaresIndices.includes(i)){
       this.setState({blueCount: this.state.blueCount - 1});
     }
 
-    if (this.state.redSquaresIndices.includes(i)){
+    if (this.redSquaresIndices.includes(i)){
       this.setState({redCount: this.state.redCount - 1});
     }
 
@@ -71,7 +66,7 @@ class App extends Component {
     let status;
     var resetButton;
 
-    let winner = calculateWinner(this.state.blueSquaresIndices, this.state.redSquaresIndices, this.state.selected, this.state.blueTurn, this.state.deathSquareIndex);
+    let winner = calculateWinner(this.blueSquaresIndices, this.redSquaresIndices, this.state.selected, this.state.blueTurn, this.deathSquareIndex);
     if (winner) {
       status = winner + ' wins!';
       resetButton = <button className='btn-primary' onClick={()=>window.location.reload()}>Reset Board for new game</button>;
@@ -90,13 +85,12 @@ class App extends Component {
         <div className="game">
           <div className="game-board">
             <Board
-              squares = {this.state.squares}
-              blueSquaresIndices = {this.state.blueSquaresIndices}
-              redSquaresIndices = {this.state.redSquaresIndices}
-              deathSquareIndex = {this.state.deathSquareIndex}
+              blueSquaresIndices = {this.blueSquaresIndices}
+              redSquaresIndices = {this.redSquaresIndices}
+              deathSquareIndex = {this.deathSquareIndex}
               onClick = {(i)=>this.handleClick(i)}
               selected = {this.state.selected}
-              bank = {this.state.squares}
+              bank = {this.squares}
               playerView = {this.state.playerView}
             />
           </div>

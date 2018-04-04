@@ -7,7 +7,7 @@ class Board extends Component {
   renderSquare(index, word) {
     let highlightRed = this.props.redSquaresIndices.includes(index);
     let highlightBlue = this.props.blueSquaresIndices.includes(index);
-    
+
     return (
       <Square
         key={index}
