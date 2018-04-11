@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import '../App.css';
 import Square from './Square';
 
@@ -23,9 +23,9 @@ function Board (props){
       );
     }
 
-    var rows = [];
-    var cells = [];
-    var cellNumber = 0;
+    let rows = [];
+    let cells = [];
+    let cellNumber = 0;
     const bank = props.bank;
 
     for (let row = 0; row < 5; row++){

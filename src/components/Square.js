@@ -18,7 +18,6 @@ function Square (props){
         );
     } else if (props.deathSquareIndex === props.index){
         return (
-          //Change this but you get the point
           <button className="btn" style={{background: "black", color: "white"}} onClick={props.onClick}>
             GAME OVER
           </button>

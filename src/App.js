@@ -6,28 +6,26 @@ class App extends Component {
   constructor(props) {
     super(props);
 
-    //Move this to a DB to pull from?
     const wordBank = require("./components/wordBank.js");
     this.squares = shuffle(wordBank).slice(0, 25);
-    var availableIndices = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24];
+    let availableIndices = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24];
     this.deathSquareIndex = Math.floor(Math.random()*availableIndices.length);
     this.blueSquaresIndices = [];
     this.redSquaresIndices = [];
 
     availableIndices = availableIndices.slice(0, this.deathSquareIndex).concat(availableIndices.slice(this.deathSquareIndex+1));
     for (let i=0; i<9; i++){
-      var blueSquareIndex = Math.floor(Math.random()*availableIndices.length);
+      let blueSquareIndex = Math.floor(Math.random()*availableIndices.length);
       this.blueSquaresIndices.push(availableIndices[blueSquareIndex]);
       availableIndices = availableIndices.slice(0, blueSquareIndex).concat(availableIndices.slice(blueSquareIndex+1));
     }
 
     for (let i=0; i<8; i++){
-      var redSquareIndex = Math.floor(Math.random()*availableIndices.length);
+      let redSquareIndex = Math.floor(Math.random()*availableIndices.length);
       this.redSquaresIndices.push(availableIndices[redSquareIndex]);
       availableIndices = availableIndices.slice(0, redSquareIndex).concat(availableIndices.slice(redSquareIndex+1));
     }
 
-    //Index does not need to be managed as state, move this later? Should I move all the states to the board level?
     this.state = {
       selected: new Set(),
       blueTurn: true,
@@ -64,7 +62,8 @@ class App extends Component {
 
   render() {
     let status;
-    var resetButton;
+    let resetButton;
+    let fontColor;
 
     let winner = calculateWinner(this.blueSquaresIndices, this.redSquaresIndices, this.state.selected, this.state.blueTurn, this.deathSquareIndex);
     if (winner) {
@@ -72,15 +71,13 @@ class App extends Component {
       resetButton = <button className='btn-primary' onClick={()=>window.location.reload()}>Reset Board for new game</button>;
     } else {
       status = status = 'Current Turn: ' + (this.state.blueTurn ? 'Blue' : 'Red');
-      var fontColor = (this.state.blueTurn) ? '#3366FF' : '#CC3333';
+      fontColor = (this.state.blueTurn) ? '#3366FF' : '#CC3333';
     }
-
-
 
     let view = (this.state.playerView ? "Spymaster View" : "Player View");
 
     return (
-      <div className=".container-fluid">
+      <div className="container-fluid">
         <h1>Code Names</h1>
         <div className="game">
           <div className="game-board">
@@ -129,7 +126,7 @@ function calculateWinner(blueSquares, redSquares, selectedSquares, blueTurn, dea
 };
 
 function shuffle(array) {
-  var currentIndex = array.length, temporaryValue, randomIndex;
+  let currentIndex = array.length, temporaryValue, randomIndex;
 
   // While there remain elements to shuffle...
   while (0 !== currentIndex) {
