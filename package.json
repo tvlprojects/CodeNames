@@ -2,21 +2,24 @@
   "name": "codenames",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://tvlprojects.github.io/CodeNames",
   "dependencies": {
     "bootstrap": "^4.0.0",
+    "gh-pages": "^1.1.0",
     "npm": "^5.8.0",
     "react": "^16.3.0",
     "react-dom": "^16.3.0",
-    "react-router": "^4.2.0",
     "react-scripts": "1.1.1"
   },
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   },
   "devDependencies": {
-    "firebase-tools": "^3.17.7"
+    "gh-pages": "1.0.0"
   }
 }

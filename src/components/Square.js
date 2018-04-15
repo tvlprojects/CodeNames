@@ -1,6 +1,5 @@
 import React from 'react';
 
-//Make this a smart component with its own state and shouldComponentUpdate??? General idea, the entire board does not need to render every click
 function Square (props){
   let clickedIndex = props.selected.has(props.index);
   if (clickedIndex) {
