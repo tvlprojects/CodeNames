@@ -2,6 +2,7 @@ import React from 'react';
 import '../App.css';
 import Square from './Square';
 
+
 function Board (props){
 
   function renderSquare(index, word) {

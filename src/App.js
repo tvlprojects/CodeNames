@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import Board from './components/Board';
+import  { Container, Grid, Button, Progress, Segment } from 'semantic-ui-react';
 
 class App extends Component {
   constructor(props) {
@@ -60,48 +61,61 @@ class App extends Component {
     );
   }
 
+  toggleTurn(i){
+    this.setState({blueTurn: !this.state.blueTurn});
+  }
+
   render() {
     let status;
     let resetButton;
-    let fontColor;
+    let fontColor = (this.state.blueTurn) ? '#0D47A1' : '#E53935';
+    let color = (this.state.blueTurn) ? 'blue' : 'red';
 
     let winner = calculateWinner(this.blueSquaresIndices, this.redSquaresIndices, this.state.selected, this.state.blueTurn, this.deathSquareIndex);
     if (winner) {
       status = winner + ' wins!';
-      resetButton = <button className='btn-primary' onClick={()=>window.location.reload()}>Reset Board for new game</button>;
+      resetButton = <Button style={{"width": "250px"}} fluid={true} onClick={()=>window.location.reload()}>Reset Board for new game</Button>;
     } else {
       status = status = 'Current Turn: ' + (this.state.blueTurn ? 'Blue' : 'Red');
-      fontColor = (this.state.blueTurn) ? '#3366FF' : '#CC3333';
     }
 
     let view = (this.state.playerView ? "Spymaster View" : "Player View");
 
     return (
-      <div className="container-fluid">
-        <h1>Code Names</h1>
-        <div className="game">
-          <div className="game-board">
-            <Board
-              blueSquaresIndices = {this.blueSquaresIndices}
-              redSquaresIndices = {this.redSquaresIndices}
-              deathSquareIndex = {this.deathSquareIndex}
-              onClick = {(i)=>this.handleClick(i)}
-              selected = {this.state.selected}
-              bank = {this.squares}
-              playerView = {this.state.playerView}
-            />
-          </div>
-          <div className="game-info">
-            <div><font color={fontColor}>{status}</font></div>
-            <div>Current Score: <font color="#3366FF">{this.state.blueCount}</font> - <font color="#CC3333">{this.state.redCount}</font></div>
-            <div className="btn-group btn-group-sm">
-              <button className = "btn-primary" onClick={()=>this.setState({playerView : !this.state.playerView})}>Change to {view}</button>
-            </div>
-            <div>
-              {resetButton}
-            </div>
-          </div>
-        </div>
+      <div>
+        <Container fluid={true} textAlign={"center"}>
+          <h1>Code Names</h1>
+        </Container>
+        <Container fluid={true}>
+          <Grid padded={true|"horizontally"} verticalAlign={"middle"} columns={"16"} >
+            <Segment basic={true} compact={true} >
+              <h2>Scoreboard</h2>
+              <Progress attached={true} total={9} value={9-this.state.blueCount} progress={"ratio"} color={"blue"}/>
+              <Progress attached={true} total={8} value={8-this.state.redCount} progress={"ratio"} color={"red"} style={{"margin-top" : "-32px"}}/>
+              <div>
+                <h2><font color={fontColor}>{status}</font></h2>
+                <Button style={{"width": "250px"}} color={color} onClick={()=>this.setState({playerView : !this.state.playerView})}>Change to {view}</Button>
+              </div>
+              <div>
+                <Button style={{"width": "250px"}} fluid={true} onClick={()=>this.toggleTurn()}>Next Turn</Button>
+              </div>
+              <div>
+                {resetButton}
+              </div>
+            </Segment>
+            <Segment basic={true} style={{"margin-left": "26px", "margin-top": "-4px"}}>
+              <Board
+                blueSquaresIndices = {this.blueSquaresIndices}
+                redSquaresIndices = {this.redSquaresIndices}
+                deathSquareIndex = {this.deathSquareIndex}
+                onClick = {(i)=>this.handleClick(i)}
+                selected = {this.state.selected}
+                bank = {this.squares}
+                playerView = {this.state.playerView}
+              />
+            </Segment>
+          </Grid>
+        </Container>
       </div>
     );
   }

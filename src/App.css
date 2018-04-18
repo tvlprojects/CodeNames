@@ -45,19 +45,13 @@
   font-size: 24px;
   font-weight: bold;
   height: 100px;
-  margin-right: 5px;
-  margin-top: 5px;
+  margin-right: 3px;
+  margin-top: 3px !important;
+  margin-bottom: 3px !important;
   padding: 0;
-  text-align: center;
-  width: 200px;
-  border-radius: 10px !important;
-}
-
-.btn-primary {
-  color: black !important;
-  background: #E8E8E8 !important;
-  border-color: #E8E8E8 !important;
-  border-radius: 10px !important;
+  text-align: center !important;
+  width: 250px;
+  border-radius: 12px !important;
 }
 
 .square:focus {
