@@ -89,7 +89,7 @@ class App extends Component {
           </h1>
         </Segment>
         <Container fluid={true}>
-          <Grid verticalAlign={"top"} centered={true} columns={16} stackable={true}>
+          <Grid verticalAlign={"top"} centered={true} columns={16} stackable={true} doubling={true} relaxed={true}>
             <Grid.Column width={3}>
               <Segment basic={true} compact={true}>
                 <h2>Scoreboard</h2>

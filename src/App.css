@@ -1,5 +1,5 @@
 .btn {
-  font-size: 24px !important;
+  font-size: 22px !important;
   font-weight: bold !important;
   background: #E8E8E8;
   font-weight: bold;
@@ -8,6 +8,6 @@
   margin-top: 3px !important;
   margin-bottom: 3px !important;
   text-align: center !important;
-  width: 250px;
+  width: 225px;
   border-radius: 12px !important;
 }
