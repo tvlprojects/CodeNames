@@ -2,7 +2,7 @@ import React from 'react';
 import  { Button } from 'semantic-ui-react';
 
 function Square (props){
-  let clickedIndex = props.selected.has(props.index);
+  let clickedIndex = props.selected.includes(props.index);
   if (clickedIndex) {
     if (props.highlightBlue){
       return (
