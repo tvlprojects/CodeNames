@@ -9,19 +9,21 @@ class Game extends Component {
     super(props);
     this.id = props.match.params.id;
 
-    this.app = firebase.initializeApp(DB_CONFIG);
-    this.database = this.app.database().ref().child(`${this.id}`);
+    if (!firebase.apps.length){
+      this.app = firebase.initializeApp(DB_CONFIG);
+      this.database = this.app.database().ref().child(`${this.id}`);
+    }
 
     this.state = {
-      squares: [],
-      selected : [],
+      squares: [""],
+      selected : [25],
       blueCount: 9,
       redCount: 8,
       playerView: true,
       blueTurn: true,
-      deathSquareIndex: 25,
-      redSquaresIndices: [],
-      blueSquaresIndices: []
+      deathSquareIndex: 999,
+      redSquaresIndices: [2],
+      blueSquaresIndices: [1]
     };
   }
 
@@ -63,7 +65,7 @@ class Game extends Component {
 
         this.setState({
           squares: squares,
-          selected : [],
+          selected : [25],
           blueCount: 9,
           redCount: 8,
           playerView: true,
@@ -71,10 +73,15 @@ class Game extends Component {
           deathSquareIndex: deathSquareIndex,
           redSquaresIndices: redSquaresIndices,
           blueSquaresIndices: blueSquaresIndices
+        }, () => {
+          this.database.set({ game : this.state});
         });
       }
     })
+  }
 
+  componentWillUnmount(){
+    this.app.delete();
   }
 
   handleClick(i) {
