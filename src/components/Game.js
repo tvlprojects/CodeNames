@@ -110,7 +110,9 @@ class Game extends Component {
     }
 
   toggleTurn(i){
-    this.setState({blueTurn: !this.state.blueTurn});
+    this.setState({blueTurn: !this.state.blueTurn}, () =>{
+      this.database.set({game : this.state });
+    });
   }
 
   resetBoard(){
