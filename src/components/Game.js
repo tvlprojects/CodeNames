@@ -127,7 +127,7 @@ class Game extends Component {
     let winner = calculateWinner(this.state.blueSquaresIndices, this.state.redSquaresIndices, this.state.selected, this.state.blueTurn, this.state.deathSquareIndex);
     if (winner) {
       status = winner + ' wins!';
-      resetButton = <Button style={{"width": "250px"}} fluid={true} onClick={()=>this.resetBoard()}>Reset Board for new game</Button>;
+      resetButton = <Button style={{"width": "80%"}} fluid={true} onClick={()=>this.resetBoard()}>Reset Board for new game</Button>;
     } else {
       status = status = 'Current Turn: ' + (this.state.blueTurn ? 'Blue' : 'Red');
     }
@@ -142,26 +142,25 @@ class Game extends Component {
           </h1>
         </Segment>
         <Container fluid={true}>
-          <Grid verticalAlign={"top"} centered={true} columns={16} stackable={true} doubling={true} relaxed={true}>
+          <Grid verticalAlign={"top"} columns={16}>
             <Grid.Column width={3}>
-              <Segment basic={true} compact={true}>
+              <Segment className="scoreboard" float={"left"} basic={true} compact={true}>
                 <h2>Scoreboard</h2>
                 <Progress total={9} value={9-this.state.blueCount} progress={"ratio"} color={"blue"}/>
                 <Progress total={8} value={8-this.state.redCount} progress={"ratio"} color={"red"} style={{"marginTop" : "-32px"}}/>
                 <div>
                   <h2><font color={fontColor}>{status}</font></h2>
-                  <Button style={{"width": "250px"}} color={color} onClick={()=>this.setState({playerView : !this.state.playerView})}>Change to {view}</Button>
+                  <Button style={{"width": "80%"}} color={color} onClick={()=>this.setState({playerView : !this.state.playerView})}>Change to {view}</Button>
                 </div>
                 <div>
-                  <Button style={{"width": "250px"}} fluid={true} onClick={()=>this.toggleTurn()}>Next Turn</Button>
+                  <Button style={{"width": "80%"}} fluid={true} onClick={()=>this.toggleTurn()}>Next Turn</Button>
                 </div>
                 <div>
                   {resetButton}
                 </div>
               </Segment>
             </Grid.Column>
-            <Grid.Column width={13} stretched={true}>
-            <Segment basic={true}>
+            <Grid.Column float={"right"} width={12} doubling={true}>
               <Board
                 blueSquaresIndices = {this.state.blueSquaresIndices}
                 redSquaresIndices = {this.state.redSquaresIndices}
@@ -171,7 +170,6 @@ class Game extends Component {
                 bank = {this.state.squares}
                 playerView = {this.state.playerView}
               />
-            </Segment>
             </Grid.Column>
           </Grid>
         </Container>

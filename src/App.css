@@ -1,5 +1,5 @@
 .btn {
-  font-size: 22px !important;
+  font-size: 1.25vw !important;
   font-weight: bold !important;
   background: #E8E8E8;
   font-weight: bold;
@@ -8,6 +8,10 @@
   margin-top: 3px !important;
   margin-bottom: 3px !important;
   text-align: center !important;
-  width: 225px;
+  width: 19%;
   border-radius: 12px !important;
+}
+
+.scoreboard {
+  width: 100%;
 }
