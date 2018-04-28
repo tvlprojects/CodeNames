@@ -143,23 +143,25 @@ class Game extends Component {
         </Segment>
         <Container fluid={true}>
           <Grid verticalAlign={"top"} columns={16}>
-            <Grid.Column width={3}>
-              <Segment className="scoreboard" float={"left"} basic={true} compact={true}>
-                <h2>Scoreboard</h2>
-                <Progress total={9} value={9-this.state.blueCount} progress={"ratio"} color={"blue"}/>
-                <Progress total={8} value={8-this.state.redCount} progress={"ratio"} color={"red"} style={{"marginTop" : "-32px"}}/>
-                <div>
-                  <h2><font color={fontColor}>{status}</font></h2>
-                  <Button style={{"width": "80%"}} color={color} onClick={()=>this.setState({playerView : !this.state.playerView})}>Change to {view}</Button>
-                </div>
-                <div>
-                  <Button style={{"width": "80%"}} fluid={true} onClick={()=>this.toggleTurn()}>Next Turn</Button>
-                </div>
-                <div>
-                  {resetButton}
-                </div>
-              </Segment>
-            </Grid.Column>
+            <div>
+              <Grid.Column width={3}>
+                <Segment className="scoreboard" float={"left"} basic={true} compact={true}>
+                  <h2 className="scalable">Scoreboard</h2>
+                  <Progress className="scalable" total={9} value={9-this.state.blueCount} progress={"ratio"} color={"blue"}/>
+                  <Progress className="scalable" total={8} value={8-this.state.redCount} progress={"ratio"} color={"red"} style={{"marginTop" : "-32px"}}/>
+                  <div>
+                    <h2 className="scalable"><font color={fontColor}>{status}</font></h2>
+                    <Button style={{"width": "80%"}} color={color} onClick={()=>this.setState({playerView : !this.state.playerView})}>Change to {view}</Button>
+                  </div>
+                  <div>
+                    <Button style={{"width": "80%"}} fluid={true} onClick={()=>this.toggleTurn()}>Next Turn</Button>
+                  </div>
+                  <div>
+                    {resetButton}
+                  </div>
+                </Segment>
+              </Grid.Column>
+            </div>
             <Grid.Column float={"right"} width={12} doubling={true}>
               <Board
                 blueSquaresIndices = {this.state.blueSquaresIndices}
