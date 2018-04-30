@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import  { Container, Segment } from 'semantic-ui-react';
+import  { Container, Segment, Button } from 'semantic-ui-react';
 
 class Home extends Component {
   constructor(props) {
@@ -37,7 +37,7 @@ class Home extends Component {
                 value={this.state.input}
                 onChange={this.updateInput}
               />
-            <Link to={`/${this.state.input}`}><button>Submit</button></Link>
+            <Link to={`/${this.state.input}`}><Button>Submit</Button></Link>
           </div>
         </Container>
       </div>

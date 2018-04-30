@@ -144,7 +144,7 @@ class Game extends Component {
             </h1>
           </Segment>
           <Grid className="gameInfo" verticalAlign={"top"} centered={true}>
-            <Grid.Row columns={3} verticalAlign={"top"}>
+            <Grid.Row columns={3} verticalAlign={"top"} style={{"marginBottom" : "2px"}}>
               <Grid.Column>
                 <h2>Scoreboard</h2>
                 <Progress className="progressBar" total={9} value={9-this.state.blueCount} progress={"ratio"} color={"blue"}/>
@@ -152,7 +152,7 @@ class Game extends Component {
               </Grid.Column>
               <Grid.Column floated={"right"} textAlign="right">
                 <h2><font color={fontColor}>{status}</font></h2>
-                <Button style={{"width": "80%", "marginBottom" : "1px"}} floated="right" fluid={true} color={color} onClick={()=>this.setState({playerView : !this.state.playerView})}>Change to {view}</Button>
+                <Button style={{"width": "80%"}} floated="right" fluid={true} color={color} onClick={()=>this.setState({playerView : !this.state.playerView})}>Change to {view}</Button>
                 {resetOrNext}
               </Grid.Column>
             </Grid.Row>

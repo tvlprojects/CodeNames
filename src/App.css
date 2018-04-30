@@ -16,6 +16,7 @@
   padding-left: 12px !important;
   padding-right: 2px !important;
 }
+
 .padded {
   padding-left: 0px !important;
   padding-right: 1px !important;
@@ -30,12 +31,13 @@
   font-size: 16px;
 }
 
-.container {
-  margin-left: 100px !important;
-  margin-right: 100px !important;
-}
-
 @media (min-width : 320px) and (max-width : 640px) {
+
+  .board {
+    padding-left: 14px !important;
+    padding-right: 10px !important;
+  }
+
   h1 {
     font-size: 16px !important;
   }
@@ -45,20 +47,29 @@
   }
 
   .button {
-    font-size: 10px !important;
+    font-size: 8.5px !important;
   }
 
   .progressBar .bar {
-    font-size: 10px !important;
+    font-size: 9px !important;
+    height: 25px !important;
+  }
+
+  .padded {
+    padding-left: 0px !important;
+    padding-right: 1px !important;
+    padding-top: .5px !important;
+    padding-bottom: 0px !important;
   }
 
   .btn {
-    font-size: 10px !important;
+    font-size: 9px !important;
     background: #E8E8E8;
     font-weight: bold;
-    height: 100px;
+    height: 50px;
     text-align: center !important;
     width: 100%;
     border-radius: 12px !important;
   }
+
 }
