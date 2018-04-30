@@ -127,9 +127,9 @@ class Game extends Component {
     let winner = calculateWinner(this.state.blueSquaresIndices, this.state.redSquaresIndices, this.state.selected, this.state.blueTurn, this.state.deathSquareIndex);
     if (winner) {
       status = winner + ' wins!';
-      resetOrNext = <Button style={{"width": "80%"}} floated="right" fluid={true} onClick={()=>this.resetBoard()}>Reset Board for new game</Button>;
+      resetOrNext = <Button className="gameinfoBtn" floated="right" fluid={true} onClick={()=>this.resetBoard()}>Reset Board for new game</Button>;
     } else {
-      resetOrNext = <Button style={{"width": "80%"}} floated="right" fluid={true} onClick={()=>this.toggleTurn()}>Next Turn</Button>
+      resetOrNext = <Button className="gameinfoBtn" floated="right" fluid={true} onClick={()=>this.toggleTurn()}>Next Turn</Button>
       status = 'Current Turn: ' + (this.state.blueTurn ? 'Blue' : 'Red');
     }
 
@@ -152,7 +152,7 @@ class Game extends Component {
               </Grid.Column>
               <Grid.Column floated={"right"} textAlign="right">
                 <h2><font color={fontColor}>{status}</font></h2>
-                <Button style={{"width": "80%"}} floated="right" fluid={true} color={color} onClick={()=>this.setState({playerView : !this.state.playerView})}>Change to {view}</Button>
+                <Button className="gameinfoBtn" floated="right" fluid={true} color={color} onClick={()=>this.setState({playerView : !this.state.playerView})}>Change to {view}</Button>
                 {resetOrNext}
               </Grid.Column>
             </Grid.Row>

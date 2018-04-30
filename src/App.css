@@ -3,9 +3,12 @@
   background: #E8E8E8;
   font-weight: bold;
   height: 125px;
-  text-align: center !important;
   width: 95%;
   border-radius: 12px !important;
+}
+
+.gameinfoBtn {
+  width: 80% !important;
 }
 
 .scoreboard {
@@ -26,8 +29,8 @@
 
 .progressBar .bar {
   height: 35px !important;
-  padding: 0px !important;
-  margin: 0px !important;
+  padding: 0px;
+  margin: 0px;
   font-size: 16px;
 }
 
@@ -47,11 +50,11 @@
   }
 
   .button {
-    font-size: 8.5px !important;
+    font-size: 8px !important;
   }
 
   .progressBar .bar {
-    font-size: 9px !important;
+    font-size: 8px !important;
     height: 25px !important;
   }
 
@@ -63,13 +66,17 @@
   }
 
   .btn {
-    font-size: 9px !important;
+    font-size: 8px !important;
     background: #E8E8E8;
     font-weight: bold;
-    height: 50px;
+    height: 45px;
     text-align: center !important;
     width: 100%;
     border-radius: 12px !important;
+  }
+
+  .gameinfoBtn {
+    width: 100% !important;
   }
 
 }
