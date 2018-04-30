@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import  { Container, Segment } from 'semantic-ui-react';
 
 class Home extends Component {
   constructor(props) {
@@ -22,14 +23,23 @@ class Home extends Component {
   render() {
     return (
       <div>
-        Enter Game id here:
-        <input
-              type='text'
-              placeholder='Game ID'
-              value={this.state.input}
-              onChange={this.updateInput}
-            />
-        <Link to={`/${this.state.input}`}><button>Submit</button></Link>
+      <Container>
+        <Segment inverted={true} textAlign="center">
+          <h1>
+            Code Names
+          </h1>
+        </Segment>
+        <div>
+          Enter Game id here:
+          <input
+                type='text'
+                placeholder='Game ID'
+                value={this.state.input}
+                onChange={this.updateInput}
+              />
+            <Link to={`/${this.state.input}`}><button>Submit</button></Link>
+          </div>
+        </Container>
       </div>
     );
   }

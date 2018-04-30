@@ -1,6 +1,7 @@
 import React from 'react';
 import '../App.css';
 import Square from './Square';
+import  { Grid } from 'semantic-ui-react';
 
 function Board (props){
 
@@ -9,17 +10,18 @@ function Board (props){
       let highlightBlue = props.blueSquaresIndices.includes(index);
 
       return (
-        <Square
-          key={index}
-          value={word}
-          onClick={() => props.onClick(index)}
-          index={index}
-          highlightBlue = {highlightBlue}
-          highlightRed = {highlightRed}
-          selected = {props.selected}
-          deathSquareIndex = {props.deathSquareIndex}
-          playerView = {props.playerView}
-        />
+        <Grid.Column className="padded" key={index}>
+          <Square
+            value={word}
+            onClick={() => props.onClick(index)}
+            index={index}
+            highlightBlue = {highlightBlue}
+            highlightRed = {highlightRed}
+            selected = {props.selected}
+            deathSquareIndex = {props.deathSquareIndex}
+            playerView = {props.playerView}
+          />
+        </Grid.Column>
       );
     }
 
@@ -33,14 +35,15 @@ function Board (props){
         cells.push(renderSquare(cellNumber, bank[cellNumber]));
         cellNumber++;
       }
-      rows.push(<div key={row} className="board-row">{cells}</div>);
+      rows.push(<Grid.Row className="padded" key={row}>{cells}</Grid.Row>);
       cells = [];
-
     }
 
     return (
       <div>
-        {rows}
+        <Grid className="board" columns={5} centered={true} verticalAlign="bottom">
+          {rows}
+        </Grid>
       </div>
     );
 }

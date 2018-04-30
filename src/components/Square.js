@@ -7,7 +7,7 @@ function Square (props){
     if (props.highlightBlue){
       return (
         <Button className="btn" color={"blue"} disabled={true} onClick={props.onClick}>
-          {props.value}
+          <div>{props.value}</div>
         </Button>
       );
     } else if (props.highlightRed){

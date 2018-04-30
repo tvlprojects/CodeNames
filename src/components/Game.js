@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Board from './Board';
-import  { Container, Grid, Button, Progress, Segment} from 'semantic-ui-react';
+import  { Container, Grid, Button, Progress, Segment } from 'semantic-ui-react';
 import firebase from 'firebase';
 import { DB_CONFIG } from '../Config';
 
@@ -121,59 +121,51 @@ class Game extends Component {
 
   render() {
     let status;
-    let resetButton;
+    let resetOrNext;
     let fontColor = (this.state.blueTurn) ? '#0D47A1' : '#E53935';
     let color = (this.state.blueTurn) ? 'blue' : 'red';
     let winner = calculateWinner(this.state.blueSquaresIndices, this.state.redSquaresIndices, this.state.selected, this.state.blueTurn, this.state.deathSquareIndex);
     if (winner) {
       status = winner + ' wins!';
-      resetButton = <Button style={{"width": "80%"}} fluid={true} onClick={()=>this.resetBoard()}>Reset Board for new game</Button>;
+      resetOrNext = <Button style={{"width": "80%"}} floated="right" fluid={true} onClick={()=>this.resetBoard()}>Reset Board for new game</Button>;
     } else {
-      status = status = 'Current Turn: ' + (this.state.blueTurn ? 'Blue' : 'Red');
+      resetOrNext = <Button style={{"width": "80%"}} floated="right" fluid={true} onClick={()=>this.toggleTurn()}>Next Turn</Button>
+      status = 'Current Turn: ' + (this.state.blueTurn ? 'Blue' : 'Red');
     }
 
     let view = (this.state.playerView ? "Spymaster View" : "Player View");
 
     return (
       <div>
-        <Segment inverted={true} color={color}>
-          <h1>
-            Code Names
-          </h1>
-        </Segment>
-        <Container fluid={true}>
-          <Grid verticalAlign={"top"} columns={16}>
-            <div>
-              <Grid.Column width={3}>
-                <Segment className="scoreboard" float={"left"} basic={true} compact={true}>
-                  <h2 className="scalable">Scoreboard</h2>
-                  <Progress className="scalable" total={9} value={9-this.state.blueCount} progress={"ratio"} color={"blue"}/>
-                  <Progress className="scalable" total={8} value={8-this.state.redCount} progress={"ratio"} color={"red"} style={{"marginTop" : "-32px"}}/>
-                  <div>
-                    <h2 className="scalable"><font color={fontColor}>{status}</font></h2>
-                    <Button style={{"width": "80%"}} color={color} onClick={()=>this.setState({playerView : !this.state.playerView})}>Change to {view}</Button>
-                  </div>
-                  <div>
-                    <Button style={{"width": "80%"}} fluid={true} onClick={()=>this.toggleTurn()}>Next Turn</Button>
-                  </div>
-                  <div>
-                    {resetButton}
-                  </div>
-                </Segment>
+        <Container>
+          <Segment inverted={true} color={color} textAlign={"center"}>
+            <h1>
+              Code Names
+            </h1>
+          </Segment>
+          <Grid className="gameInfo" verticalAlign={"top"} centered={true}>
+            <Grid.Row columns={3} verticalAlign={"top"}>
+              <Grid.Column>
+                <h2>Scoreboard</h2>
+                <Progress className="progressBar" total={9} value={9-this.state.blueCount} progress={"ratio"} color={"blue"}/>
+                <Progress className="progressBar" total={8} value={8-this.state.redCount} progress={"ratio"} color={"red"} style={{"marginTop" : "-34px"}}/>
               </Grid.Column>
-            </div>
-            <Grid.Column float={"right"} width={12} doubling={true}>
-              <Board
-                blueSquaresIndices = {this.state.blueSquaresIndices}
-                redSquaresIndices = {this.state.redSquaresIndices}
-                deathSquareIndex = {this.state.deathSquareIndex}
-                onClick = {(i)=>this.handleClick(i)}
-                selected = {this.state.selected}
-                bank = {this.state.squares}
-                playerView = {this.state.playerView}
-              />
-            </Grid.Column>
+              <Grid.Column floated={"right"} textAlign="right">
+                <h2><font color={fontColor}>{status}</font></h2>
+                <Button style={{"width": "80%", "marginBottom" : "1px"}} floated="right" fluid={true} color={color} onClick={()=>this.setState({playerView : !this.state.playerView})}>Change to {view}</Button>
+                {resetOrNext}
+              </Grid.Column>
+            </Grid.Row>
           </Grid>
+          <Board
+            blueSquaresIndices = {this.state.blueSquaresIndices}
+            redSquaresIndices = {this.state.redSquaresIndices}
+            deathSquareIndex = {this.state.deathSquareIndex}
+            onClick = {(i)=>this.handleClick(i)}
+            selected = {this.state.selected}
+            bank = {this.state.squares}
+            playerView = {this.state.playerView}
+          />
         </Container>
       </div>
     );

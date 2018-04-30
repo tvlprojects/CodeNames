@@ -1,14 +1,10 @@
 .btn {
-  font-size: 1.25vw !important;
-  font-weight: bold !important;
+  font-size: 22px !important;
   background: #E8E8E8;
   font-weight: bold;
-  height: 100px;
-  margin-right: 3px;
-  margin-top: 3px !important;
-  margin-bottom: 3px !important;
+  height: 125px;
   text-align: center !important;
-  width: 19%;
+  width: 95%;
   border-radius: 12px !important;
 }
 
@@ -16,6 +12,53 @@
   width: 100%;
 }
 
-.scalable {
-  font-size: 1.5vw
+.board {
+  padding-left: 12px !important;
+  padding-right: 2px !important;
+}
+.padded {
+  padding-left: 0px !important;
+  padding-right: 1px !important;
+  padding-top: 3px !important;
+  padding-bottom: 3px !important;
+}
+
+.progressBar .bar {
+  height: 35px !important;
+  padding: 0px !important;
+  margin: 0px !important;
+  font-size: 16px;
+}
+
+.container {
+  margin-left: 100px !important;
+  margin-right: 100px !important;
+}
+
+@media (min-width : 320px) and (max-width : 640px) {
+  h1 {
+    font-size: 16px !important;
+  }
+
+  h2 {
+    font-size: 11px !important;
+  }
+
+  .button {
+    font-size: 10px !important;
+  }
+
+  .progressBar .bar {
+    font-size: 10px !important;
+  }
+
+  .btn {
+    font-size: 10px !important;
+    background: #E8E8E8;
+    font-weight: bold;
+    height: 100px;
+    text-align: center !important;
+    width: 100%;
+    border-radius: 12px !important;
+  }
 }
