@@ -4,7 +4,7 @@ import  { Container, Segment, Button, Input, Grid  } from 'semantic-ui-react';
 
 class Home extends Component {
   constructor(props) {
-    super(props)
+    super(props);
 
     this.state = {
       input: '',
@@ -32,7 +32,7 @@ class Home extends Component {
               </h1>
           </Segment>
           <Grid centered={true} padded={"horizontally"}>
-            <Segment size={"small"} compact={true} basic={true}>
+            <form>
               <Grid.Row>
                 <Container text textAlign={"justified"}>
                   <h2>
@@ -53,7 +53,7 @@ class Home extends Component {
                   onChange={this.updateInput}
                 />
               </Grid.Row>
-            </Segment>
+            </form>
           </Grid>
         </Container>
       </div>

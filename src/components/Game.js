@@ -36,12 +36,11 @@ class Game extends Component {
           selected : snapshot.selected,
           blueCount: snapshot.blueCount,
           redCount: snapshot.redCount,
-          playerView: snapshot.playerView,
           blueTurn: snapshot.blueTurn,
           deathSquareIndex: snapshot.deathSquareIndex,
           redSquaresIndices: snapshot.redSquaresIndices,
           blueSquaresIndices: snapshot.blueSquaresIndices
-        })
+        });
       } else {
         const wordBank = require("./wordBank.js");
         const squares = shuffle(wordBank).slice(0, 25);
@@ -85,16 +84,23 @@ class Game extends Component {
   }
 
   handleClick(i) {
-    if (!this.state.playerView || calculateWinner(this.state.blueSquaresIndices, this.state.redSquaresIndices, this.state.selected, this.state.blueTurn, this.state.deathSquareIndex)){
+    const playerView = this.state.playerView;
+    const blueSquares = this.state.blueSquaresIndices;
+    const redSquares = this.state.redSquaresIndices;
+    const selected = this.state.selected;
+    const blueTurn = this.state.blueTurn;
+    const deathSquare = this.state.deathSquareIndex;
+
+    if (!playerView || calculateWinner(blueSquares, redSquares, selected, blueTurn, deathSquare)){
       return;
     }
 
-    if ((this.state.blueTurn && !this.state.blueSquaresIndices.includes(i)) ||
-      (!this.state.blueTurn && !this.state.redSquaresIndices.includes(i))) {
-        this.setState({blueTurn: !this.state.blueTurn});
+    if ((blueTurn && !blueSquares.includes(i)) ||
+      (!blueTurn && !redSquares.includes(i))) {
+        this.setState({blueTurn: !blueTurn});
     }
 
-    if (this.state.blueSquaresIndices.includes(i)){
+    if (blueSquares.includes(i)){
       this.setState({blueCount: this.state.blueCount - 1});
     }
 
@@ -103,7 +109,7 @@ class Game extends Component {
     }
 
     this.setState({
-      selected: this.state.selected.concat(i)
+      selected: selected.concat(i)
       }, () => {
         this.database.set({ game : this.state});
       })
@@ -120,11 +126,17 @@ class Game extends Component {
   }
 
   render() {
+    const playerView = this.state.playerView;
+    const blueSquares = this.state.blueSquaresIndices;
+    const redSquares = this.state.redSquaresIndices;
+    const selected = this.state.selected;
+    const blueTurn = this.state.blueTurn;
+    const deathSquare = this.state.deathSquareIndex;
+    const squares = this.state.squares;
+
     let status;
     let resetOrNext;
-    let fontColor = (this.state.blueTurn) ? '#0D47A1' : '#E53935';
-    let color = (this.state.blueTurn) ? 'blue' : 'red';
-    let winner = calculateWinner(this.state.blueSquaresIndices, this.state.redSquaresIndices, this.state.selected, this.state.blueTurn, this.state.deathSquareIndex);
+    let winner = calculateWinner(blueSquares, redSquares, selected, blueTurn, deathSquare);
     if (winner) {
       status = winner + ' wins!';
       resetOrNext = <Button className="gameinfoBtn" floated="right" fluid={true} onClick={()=>this.resetBoard()}>Reset Board for new game</Button>;
@@ -135,6 +147,8 @@ class Game extends Component {
 
     let view = (this.state.playerView ? "Spymaster View" : "Player View");
 
+    let fontColor = (blueTurn) ? '#0D47A1' : '#E53935';
+    let color = (blueTurn) ? 'blue' : 'red';
     return (
       <div>
         <Container>
@@ -152,19 +166,19 @@ class Game extends Component {
               </Grid.Column>
               <Grid.Column floated={"right"} textAlign="right">
                 <h2><font color={fontColor}>{status}</font></h2>
-                <Button className="gameinfoBtn" floated="right" fluid={true} color={color} onClick={()=>this.setState({playerView : !this.state.playerView})}>Change to {view}</Button>
+                <Button className="gameinfoBtn" floated="right" fluid={true} color={color} onClick={()=>this.setState({playerView : !playerView})}>Change to {view}</Button>
                 {resetOrNext}
               </Grid.Column>
             </Grid.Row>
           </Grid>
           <Board
-            blueSquaresIndices = {this.state.blueSquaresIndices}
-            redSquaresIndices = {this.state.redSquaresIndices}
-            deathSquareIndex = {this.state.deathSquareIndex}
+            blueSquaresIndices = {blueSquares}
+            redSquaresIndices = {redSquares}
+            deathSquareIndex = {deathSquare}
             onClick = {(i)=>this.handleClick(i)}
-            selected = {this.state.selected}
-            bank = {this.state.squares}
-            playerView = {this.state.playerView}
+            selected = {selected}
+            bank = {squares}
+            playerView = {playerView}
           />
         </Container>
       </div>
