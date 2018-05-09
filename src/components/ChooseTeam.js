@@ -4,7 +4,6 @@ import { Container, Grid, Segment, Card, Image, Divider } from 'semantic-ui-reac
 class ChooseTeam extends Component {
 
   render() {
-    console.log(this.props);
     return (
       <div>
         <Container>

@@ -18,6 +18,8 @@ class Game extends Component {
     this.state = {
       clueNumInput: "",
       clueInput: "",
+      clue: "",
+      clueNum: "",
       clueSubmitted: false,
       blueTeam: true,
       viewSelected: false,
@@ -81,6 +83,8 @@ class Game extends Component {
           redCount: 8,
           clueNumInput: "",
           clueInput: "",
+          clue: "",
+          clueNum: "",
           clueSubmitted: false,
           blueTurn: true,
           deathSquareIndex: deathSquareIndex,
@@ -145,7 +149,7 @@ class Game extends Component {
     }
 
   toggleTurn(i){
-    this.setState({blueTurn: !this.state.blueTurn, clueSubmitted: false}, () =>{
+    this.setState({blueTurn: !this.state.blueTurn, clueSubmitted: false}, () => {
       this.database.update({game : this.state });
     });
   }
@@ -200,7 +204,6 @@ class Game extends Component {
       const clueSubmitted = this.state.clueSubmitted;
       const blueTeam = this.state.blueTeam;
       const disabled = ((blueTurn && !blueTeam) || (!blueTurn && blueTeam)) ? true : false;
-      console.log(disabled)
       const fontColor = (blueTurn) ? '#0D47A1' : '#E53935';
       const color = (blueTurn) ? 'blue' : 'red';
 
