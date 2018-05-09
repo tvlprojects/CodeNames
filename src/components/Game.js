@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Board from './Board';
-import { Container, Grid, Button, Progress, Segment, Card, Image, Divider, Input, Message } from 'semantic-ui-react';
+import ChooseTeam from './ChooseTeam';
+import { Container, Grid, Button, Progress, Segment, Input, Message } from 'semantic-ui-react';
 import firebase from 'firebase';
 import { DB_CONFIG } from '../Config';
 
@@ -183,6 +184,10 @@ class Game extends Component {
     })
   }
 
+  handleChooseTeamClick(viewSelected, playerView, blueTeam){
+    this.setState({viewSelected, playerView, blueTeam});
+  }
+
   render() {
     if (this.state.viewSelected) {
       const playerView = this.state.playerView;
@@ -194,7 +199,8 @@ class Game extends Component {
       const squares = this.state.squares;
       const clueSubmitted = this.state.clueSubmitted;
       const blueTeam = this.state.blueTeam;
-      const disabled = ((blueTurn && !blueTeam) || (!blueTurn && blueTeam));
+      const disabled = ((blueTurn && !blueTeam) || (!blueTurn && blueTeam)) ? true : false;
+      console.log(disabled)
       const fontColor = (blueTurn) ? '#0D47A1' : '#E53935';
       const color = (blueTurn) ? 'blue' : 'red';
 
@@ -282,59 +288,7 @@ class Game extends Component {
       );
     } else {
       return (
-        <div>
-          <Container>
-            <Segment inverted={true} textAlign="center">
-              <h1>
-                Code Names
-              </h1>
-            </Segment>
-            <Grid textAlign={"center"} padded={"horizontally"}>
-              <Grid.Row><h1>Pick Your Team and Role</h1></Grid.Row>
-              <Grid.Row columns={5} stretched={true}>
-                <Grid.Column>
-                  <Card onClick={()=>this.setState({viewSelected: true, playerView: true, blueTeam: true})} floated={"left"} color="blue">
-                    <Image src = 'https://appstickers-cdn.appadvice.com/1153735070/818875334/93fd18f6c12ea6344226f428d49878fe-3.png' size={"massive"}/>
-                    <Card.Content>
-                      <Card.Header className="cardHeader" textAlign="center">Agent</Card.Header>
-                      <Card.Description className="cardDescription">The agent guesses based on the clues given</Card.Description>
-                    </Card.Content>
-                  </Card>
-                </Grid.Column>
-                <Grid.Column>
-                  <Card onClick={()=>this.setState({viewSelected: true, playerView: false, blueTeam: true})} floated={"left"} color="blue">
-                    <Image src = 'https://appstickers-cdn.appadvice.com/1153735070/818875334/60df243593b6b5e4bf59bf1dce2aa5be-0.png' size={"massive"}/>
-                    <Card.Content>
-                      <Card.Header className="cardHeader" textAlign="center">Spymaster</Card.Header>
-                      <Card.Description  className="cardDescription">The Spymaster gives clues to guess</Card.Description>
-                    </Card.Content>
-                  </Card>
-                </Grid.Column>
-                <Grid.Column>
-                  <Divider vertical>Or</Divider>
-                </Grid.Column>
-                <Grid.Column>
-                  <Card onClick={()=>this.setState({viewSelected: true, playerView: true, blueTeam: false})} floated={"right"} color="red">
-                    <Image src = 'https://appstickers-cdn.appadvice.com/1153735070/818875334/5acc6c1edb020629f9bb6cea6bdabb0c-7.png' size={"massive"}/>
-                    <Card.Content>
-                      <Card.Header className="cardHeader" textAlign="center">Agent</Card.Header>
-                      <Card.Description className="cardDescription">The agent guesses based on the clues given</Card.Description>
-                    </Card.Content>
-                  </Card>
-                </Grid.Column>
-                <Grid.Column>
-                  <Card onClick={()=>this.setState({viewSelected: true, playerView: false, blueTeam: false})} floated={"right"} color="red">
-                    <Image src = 'https://appstickers-cdn.appadvice.com/1153735070/818875334/9e9f1a72fced69aa72d6202f06224f0b-4.png' size={"massive"}/>
-                    <Card.Content>
-                      <Card.Header className="cardHeader" textAlign="center">Spymaster</Card.Header>
-                      <Card.Description className="cardDescription">The Spymaster gives clues to guess</Card.Description>
-                    </Card.Content>
-                  </Card>
-                </Grid.Column>
-              </Grid.Row>
-            </Grid>
-          </Container>
-        </div>
+        <ChooseTeam onClick={(i,j,k)=>this.handleChooseTeamClick(i,j,k)}/>
       );
     }
   }
