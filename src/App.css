@@ -80,4 +80,16 @@ h2 {
     font-size: 8px !important;
   }
 
+  .cardHeader {
+    font-size: 6px !important;
+  }
+
+  .cardDescription {
+    font-size: 4px !important;
+  }
+
+  .clue {
+    font-size: 10px !important;
+  }
+
 }

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Board from './Board';
-import  { Container, Grid, Button, Progress, Segment } from 'semantic-ui-react';
+import { Container, Grid, Button, Progress, Segment, Card, Image, Divider, Input, Message } from 'semantic-ui-react';
 import firebase from 'firebase';
 import { DB_CONFIG } from '../Config';
 
@@ -15,21 +15,29 @@ class Game extends Component {
     }
 
     this.state = {
+      clueNumInput: "",
+      clueInput: "",
+      clueSubmitted: false,
+      blueTeam: true,
+      viewSelected: false,
       squares: [""],
-      selected : [25],
+      selected : [],
       blueCount: 9,
       redCount: 8,
       playerView: true,
       blueTurn: true,
       deathSquareIndex: 999,
-      redSquaresIndices: [2],
-      blueSquaresIndices: [1]
+      redSquaresIndices: [],
+      blueSquaresIndices: []
     };
+
+    this.updateInputClue = this.updateInputClue.bind(this);
+    this.updateInputClueNum = this.updateInputClueNum.bind(this);
   }
 
   componentDidMount(){
     this.database.on('value', snap => {
-      if (snap.val()){
+      if (snap.val() && snap.val().game){
         const snapshot = snap.val().game;
         this.setState({
           squares: snapshot.squares,
@@ -39,7 +47,10 @@ class Game extends Component {
           blueTurn: snapshot.blueTurn,
           deathSquareIndex: snapshot.deathSquareIndex,
           redSquaresIndices: snapshot.redSquaresIndices,
-          blueSquaresIndices: snapshot.blueSquaresIndices
+          blueSquaresIndices: snapshot.blueSquaresIndices,
+          clueSubmitted: snapshot.clueSubmitted,
+          clue: snapshot.clue,
+          clueNum: snapshot.clueNum
         });
       } else {
         const wordBank = require("./wordBank.js");
@@ -67,13 +78,15 @@ class Game extends Component {
           selected : [25],
           blueCount: 9,
           redCount: 8,
-          playerView: true,
+          clueNumInput: "",
+          clueInput: "",
+          clueSubmitted: false,
           blueTurn: true,
           deathSquareIndex: deathSquareIndex,
           redSquaresIndices: redSquaresIndices,
           blueSquaresIndices: blueSquaresIndices
         }, () => {
-          this.database.set({ game : this.state});
+          this.database.update({ game : this.state});
         });
       }
     })
@@ -85,19 +98,33 @@ class Game extends Component {
 
   handleClick(i) {
     const playerView = this.state.playerView;
+    const clueSubmitted = this.state.clueSubmitted;
     const blueSquares = this.state.blueSquaresIndices;
     const redSquares = this.state.redSquaresIndices;
     const selected = this.state.selected;
     const blueTurn = this.state.blueTurn;
     const deathSquare = this.state.deathSquareIndex;
+    const clueNum = this.state.clueNum-1;
+    const blueTeam = this.state.blueTeam;
 
-    if (!playerView || calculateWinner(blueSquares, redSquares, selected, blueTurn, deathSquare)){
+    /*
+    * Disabled button when:
+    * 1. Not the correct team's turn
+    * 2. If the clue hasn't been submitted
+    * 3. In spymaster view
+    * 4. If a team has won
+    */
+    if ((blueTurn && !blueTeam) || (!blueTurn && blueTeam) || !clueSubmitted || !playerView || calculateWinner(blueSquares, redSquares, selected, blueTurn, deathSquare)){
       return;
+    }
+
+    if (clueNum===0){
+        this.setState({blueTurn: !blueTurn, clueSubmitted: false});
     }
 
     if ((blueTurn && !blueSquares.includes(i)) ||
       (!blueTurn && !redSquares.includes(i))) {
-        this.setState({blueTurn: !blueTurn});
+        this.setState({blueTurn: !blueTurn, clueSubmitted: false});
     }
 
     if (blueSquares.includes(i)){
@@ -109,80 +136,207 @@ class Game extends Component {
     }
 
     this.setState({
-      selected: selected.concat(i)
+      selected: selected.concat(i),
+      clueNum: clueNum
       }, () => {
-        this.database.set({ game : this.state});
+        this.database.update({ game : this.state});
       })
     }
 
   toggleTurn(i){
-    this.setState({blueTurn: !this.state.blueTurn}, () =>{
-      this.database.set({game : this.state });
+    this.setState({blueTurn: !this.state.blueTurn, clueSubmitted: false}, () =>{
+      this.database.update({game : this.state });
     });
   }
 
   resetBoard(){
-      this.database.remove();
+      this.database.child("game").remove();
+  }
+
+  onClueSubmit(e){
+    const clueNum = this.state.clueNumInput;
+    const clue = this.state.clueInput;
+
+    this.setState({
+      clueSubmitted: true,
+      clueInput: "",
+      clueNumInput: "",
+      clueNum: clueNum,
+      clue: clue
+    }, () => {
+      this.database.update({game : this.state });
+    });
+    e.preventDefault();
+  }
+
+  updateInputClue(e) {
+    const value = e.target.value
+    this.setState({
+      clueInput: value
+    })
+  }
+
+  updateInputClueNum(e) {
+    const value = e.target.value
+    this.setState({
+      clueNumInput: value
+    })
   }
 
   render() {
-    const playerView = this.state.playerView;
-    const blueSquares = this.state.blueSquaresIndices;
-    const redSquares = this.state.redSquaresIndices;
-    const selected = this.state.selected;
-    const blueTurn = this.state.blueTurn;
-    const deathSquare = this.state.deathSquareIndex;
-    const squares = this.state.squares;
+    if (this.state.viewSelected) {
+      const playerView = this.state.playerView;
+      const blueSquares = this.state.blueSquaresIndices;
+      const redSquares = this.state.redSquaresIndices;
+      const selected = this.state.selected;
+      const blueTurn = this.state.blueTurn;
+      const deathSquare = this.state.deathSquareIndex;
+      const squares = this.state.squares;
+      const clueSubmitted = this.state.clueSubmitted;
+      const blueTeam = this.state.blueTeam;
+      const disabled = ((blueTurn && !blueTeam) || (!blueTurn && blueTeam));
+      const fontColor = (blueTurn) ? '#0D47A1' : '#E53935';
+      const color = (blueTurn) ? 'blue' : 'red';
 
-    let status;
-    let resetOrNext;
-    let winner = calculateWinner(blueSquares, redSquares, selected, blueTurn, deathSquare);
-    if (winner) {
-      status = winner + ' wins!';
-      resetOrNext = <Button className="gameinfoBtn" floated="right" fluid={true} onClick={()=>this.resetBoard()}>Reset Board for new game</Button>;
+      let status;
+      let resetOrNext;
+
+      let formOrClue = "";
+      const winner = calculateWinner(blueSquares, redSquares, selected, blueTurn, deathSquare);
+      if (winner) {
+        status = winner + ' wins!';
+        resetOrNext = <Button className="gameinfoBtn" floated="right" fluid={true} onClick={()=>this.resetBoard()}>Reset Board for new game</Button>;
+        formOrClue = <h2>Game Over!</h2>
+      } else {
+        resetOrNext = <Button className="gameinfoBtn" disabled = {disabled} floated="right" fluid={true} onClick={()=>this.toggleTurn()}>Next Turn</Button>
+        status = 'Current Turn: ' + (this.state.blueTurn ? 'Blue' : 'Red');
+
+        if (!clueSubmitted) {
+          if ((!playerView && blueTeam && blueTurn) || (!playerView && !blueTeam && !blueTurn)){
+            formOrClue = (
+              <div>
+                <h2>Submit Clue</h2>
+                <form onSubmit={(event)=>this.onClueSubmit(event)}>
+                  <Input type="text" placeholder="Clue" size="small" fluid={true} value={this.state.clueInput} onChange={this.updateInputClue}/>
+                  <Input type="number" min="1" max="9" placeholder="Number of Words"  fluid={true} value={this.state.clueNumInput} onChange={this.updateInputClueNum}/>
+                  <Button fluid={true}>Submit</Button>
+                </form>
+              </div>
+              )
+            } else{
+              formOrClue = <h2>Awaiting Clue...</h2>
+            }
+        } else {
+          let header = `${this.state.clueNum} guess(es) left with ${this.state.clue.toUpperCase()} as the clue`;
+          if (this.state.clueNum === "1"){
+             header = `${this.state.clueNum} guess left with ${this.state.clue.toUpperCase()} as the clue`;
+          }
+          formOrClue = (
+            <Grid.Column textAlign="center">
+              <h2>Clue</h2>
+              <Message
+                className = "clue"
+                color = {color}
+                header={header}
+              />
+            </Grid.Column>
+          )
+        }
+      }
+
+      return (
+        <div>
+          <Container>
+            <Segment inverted={true} color={color} textAlign={"center"}>
+              <h1>
+                Code Names
+              </h1>
+            </Segment>
+            <Grid className="gameInfo" verticalAlign={"top"} centered={true}>
+              <Grid.Row columns={3} verticalAlign={"top"} style={{"marginBottom" : "2px"}}>
+                <Grid.Column>
+                  <h2>Scoreboard</h2>
+                  <Progress className="progressBar" total={9} value={9-this.state.blueCount} progress={"ratio"} color={"blue"}/>
+                  <Progress className="progressBar" total={8} value={8-this.state.redCount} progress={"ratio"} color={"red"} style={{"marginTop" : "-34px"}}/>
+                </Grid.Column>
+                <Grid.Column textAlign="center">
+                  {formOrClue}
+                </Grid.Column>
+                <Grid.Column floated={"right"} textAlign="right">
+                  <h2><font color={fontColor}>{status}</font></h2>
+                  {resetOrNext}
+                </Grid.Column>
+              </Grid.Row>
+            </Grid>
+            <Board
+              blueSquaresIndices = {blueSquares}
+              redSquaresIndices = {redSquares}
+              deathSquareIndex = {deathSquare}
+              onClick = {(i)=>this.handleClick(i)}
+              selected = {selected}
+              bank = {squares}
+              playerView = {playerView}
+            />
+          </Container>
+        </div>
+      );
     } else {
-      resetOrNext = <Button className="gameinfoBtn" floated="right" fluid={true} onClick={()=>this.toggleTurn()}>Next Turn</Button>
-      status = 'Current Turn: ' + (this.state.blueTurn ? 'Blue' : 'Red');
+      return (
+        <div>
+          <Container>
+            <Segment inverted={true} textAlign="center">
+              <h1>
+                Code Names
+              </h1>
+            </Segment>
+            <Grid textAlign={"center"} padded={"horizontally"}>
+              <Grid.Row><h1>Pick Your Team and Role</h1></Grid.Row>
+              <Grid.Row columns={5} stretched={true}>
+                <Grid.Column>
+                  <Card onClick={()=>this.setState({viewSelected: true, playerView: true, blueTeam: true})} floated={"left"} color="blue">
+                    <Image src = 'https://appstickers-cdn.appadvice.com/1153735070/818875334/93fd18f6c12ea6344226f428d49878fe-3.png' size={"massive"}/>
+                    <Card.Content>
+                      <Card.Header className="cardHeader" textAlign="center">Agent</Card.Header>
+                      <Card.Description className="cardDescription">The agent guesses based on the clues given</Card.Description>
+                    </Card.Content>
+                  </Card>
+                </Grid.Column>
+                <Grid.Column>
+                  <Card onClick={()=>this.setState({viewSelected: true, playerView: false, blueTeam: true})} floated={"left"} color="blue">
+                    <Image src = 'https://appstickers-cdn.appadvice.com/1153735070/818875334/60df243593b6b5e4bf59bf1dce2aa5be-0.png' size={"massive"}/>
+                    <Card.Content>
+                      <Card.Header className="cardHeader" textAlign="center">Spymaster</Card.Header>
+                      <Card.Description  className="cardDescription">The Spymaster gives clues to guess</Card.Description>
+                    </Card.Content>
+                  </Card>
+                </Grid.Column>
+                <Grid.Column>
+                  <Divider vertical>Or</Divider>
+                </Grid.Column>
+                <Grid.Column>
+                  <Card onClick={()=>this.setState({viewSelected: true, playerView: true, blueTeam: false})} floated={"right"} color="red">
+                    <Image src = 'https://appstickers-cdn.appadvice.com/1153735070/818875334/5acc6c1edb020629f9bb6cea6bdabb0c-7.png' size={"massive"}/>
+                    <Card.Content>
+                      <Card.Header className="cardHeader" textAlign="center">Agent</Card.Header>
+                      <Card.Description className="cardDescription">The agent guesses based on the clues given</Card.Description>
+                    </Card.Content>
+                  </Card>
+                </Grid.Column>
+                <Grid.Column>
+                  <Card onClick={()=>this.setState({viewSelected: true, playerView: false, blueTeam: false})} floated={"right"} color="red">
+                    <Image src = 'https://appstickers-cdn.appadvice.com/1153735070/818875334/9e9f1a72fced69aa72d6202f06224f0b-4.png' size={"massive"}/>
+                    <Card.Content>
+                      <Card.Header className="cardHeader" textAlign="center">Spymaster</Card.Header>
+                      <Card.Description className="cardDescription">The Spymaster gives clues to guess</Card.Description>
+                    </Card.Content>
+                  </Card>
+                </Grid.Column>
+              </Grid.Row>
+            </Grid>
+          </Container>
+        </div>
+      );
     }
-
-    let view = (this.state.playerView ? "Spymaster View" : "Player View");
-
-    let fontColor = (blueTurn) ? '#0D47A1' : '#E53935';
-    let color = (blueTurn) ? 'blue' : 'red';
-    return (
-      <div>
-        <Container>
-          <Segment inverted={true} color={color} textAlign={"center"}>
-            <h1>
-              Code Names
-            </h1>
-          </Segment>
-          <Grid className="gameInfo" verticalAlign={"top"} centered={true}>
-            <Grid.Row columns={3} verticalAlign={"top"} style={{"marginBottom" : "2px"}}>
-              <Grid.Column>
-                <h2>Scoreboard</h2>
-                <Progress className="progressBar" total={9} value={9-this.state.blueCount} progress={"ratio"} color={"blue"}/>
-                <Progress className="progressBar" total={8} value={8-this.state.redCount} progress={"ratio"} color={"red"} style={{"marginTop" : "-34px"}}/>
-              </Grid.Column>
-              <Grid.Column floated={"right"} textAlign="right">
-                <h2><font color={fontColor}>{status}</font></h2>
-                <Button className="gameinfoBtn" floated="right" fluid={true} color={color} onClick={()=>this.setState({playerView : !playerView})}>Change to {view}</Button>
-                {resetOrNext}
-              </Grid.Column>
-            </Grid.Row>
-          </Grid>
-          <Board
-            blueSquaresIndices = {blueSquares}
-            redSquaresIndices = {redSquares}
-            deathSquareIndex = {deathSquare}
-            onClick = {(i)=>this.handleClick(i)}
-            selected = {selected}
-            bank = {squares}
-            playerView = {playerView}
-          />
-        </Container>
-      </div>
-    );
   }
 }
 

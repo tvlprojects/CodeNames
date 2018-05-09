@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import Game from './components/Game';
+import OfflineGame from './components/OfflineGame';
 import Home from './components/Home';
 import { HashRouter, Route, Switch } from 'react-router-dom';
 
@@ -12,6 +13,7 @@ class App extends Component {
         <HashRouter>
           <div>
             <Switch>
+              <Route path="/offline/:id" component= {OfflineGame} />
               <Route path="/:id" component = {Game}/>
               <Route path="/" component={Home} />
             </Switch>

@@ -2,66 +2,37 @@ import React from 'react';
 import  { Button } from 'semantic-ui-react';
 
 function Square (props){
-  let clickedIndex = props.selected.includes(props.index);
-  if (clickedIndex) {
-    if (props.highlightBlue){
-      return (
-        <Button className="btn" color={"blue"} disabled={true} onClick={props.onClick}>
-          <div>{props.value}</div>
-        </Button>
-      );
-    } else if (props.highlightRed){
-        return (
-          <Button className="btn" color={"red"} disabled={true} onClick={props.onClick}>
-            {props.value}
-          </Button>
-        );
+  let clicked = props.selected.includes(props.index);
+  let color;
+  let style = {color: "black"};
+
+  if (clicked) {
+    style={};
+    if (props.highlightBlue) {
+      color = "blue";
+    } else if (props.highlightRed) {
+      color = "red";
     } else if (props.deathSquareIndex === props.index){
-        return (
-          <Button className="btn" color={"black"} onClick={props.onClick}>
-            {props.value}
-          </Button>
-        );
-    } else {
-      return (
-        <Button className="btn" disabled={true} onClick={props.onClick}>
-          {props.value}
-        </Button>
-      );
+      color = "black";
+      clicked = false;
     }
   } else if (!props.playerView) {
     if (props.highlightBlue){
-      return (
-        <Button className="btn" style={{color: "#0D47A1"}} onClick={props.onClick}>
-          {props.value}
-        </Button>
-      );
-    } else if (props.highlightRed){
-        return (
-          <Button className="btn" style={{color: "#E53935"}} onClick={props.onClick}>
-            {props.value}
-          </Button>
-        );
-    } else if (props.deathSquareIndex === props.index){
-        return (
-          <Button className="btn" style={{color: "#FBC02D"}} onClick={props.onClick}>
-            {props.value}
-          </Button>
-        );
+      style={color: "#0D47A1"};
+    } else if (props.highlightRed) {
+      style={color: "#E53935"};
+    } else if (props.deathSquareIndex === props.index) {
+      style={color: "#FBC02D"};
     } else {
-      return (
-        <Button className="btn" style={{color: "gray"}} onClick={props.onClick}>
-          {props.value}
-        </Button>
-      );
+      style={color: "gray"}
     }
-  } else {
-    return (
-      <Button className="btn unclicked" style={{color: "black"}} onClick={props.onClick}>
-        {props.value}
-      </Button>
-    );
   }
+
+  return (
+    <Button className="btn" color={color} disabled={clicked} style={style} onClick={props.onClick}>
+      <div>{props.value}</div>
+    </Button>
+  );
 
 }
 

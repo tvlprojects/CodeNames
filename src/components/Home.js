@@ -21,7 +21,12 @@ class Home extends Component {
   }
 
   render() {
-    const submit = <Link to={`/${this.state.input}`}><Button size="massive">Enter</Button></Link>
+    const submit = (
+       <Button.Group>
+        <Link to={`/${this.state.input}`}><Button size="massive">Enter Online</Button></Link>
+        <Link to={`/offline/${this.state.input}`}><Button size="massive">Enter Offline</Button></Link>
+       </Button.Group>
+    );
 
     return (
       <div>
