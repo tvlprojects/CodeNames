@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import  { Container, Segment, Button, Input, Grid  } from 'semantic-ui-react';
+import  { Container, Button, Input, Grid  } from 'semantic-ui-react';
+import Header from './Header';
 
 class Home extends Component {
   constructor(props) {
@@ -22,21 +23,17 @@ class Home extends Component {
 
   render() {
     const submit = (
-       <Button.Group>
-        <Link to={`/${this.state.input}`}><Button size="massive">Enter Online</Button></Link>
-        <Link to={`/offline/${this.state.input}`}><Button size="massive">Enter Offline</Button></Link>
-       </Button.Group>
+      <Container text>
+        <Link to={`/${this.state.input}`}><Button size="massive" fluid={true} primary={true}>Enter Online</Button></Link>
+        <Link to={`/offline/${this.state.input}`}><Button size="massive" fluid= {true}>Enter Offline</Button></Link>
+      </Container>
     );
 
     return (
       <div>
         <Container >
-          <Segment inverted={true} textAlign="center">
-            <h1>
-              Code Names
-              </h1>
-          </Segment>
-          <Grid centered={true} padded={"horizontally"}>
+          <Header label = "Code Names" color = "black"/>
+          <Grid centered={true} padded={"horizontally"} stackable={true}>
             <form>
               <Grid.Row>
                 <Container text textAlign={"justified"}>
@@ -50,14 +47,15 @@ class Home extends Component {
               <Grid.Row>
                 <Input
                   fluid={true}
-                  action={submit}
                   type='text'
                   size="massive"
                   placeholder='Game Id'
                   value={this.state.input}
                   onChange={this.updateInput}
                 />
+
               </Grid.Row>
+              {submit}
             </form>
           </Grid>
         </Container>

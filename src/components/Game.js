@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import Board from './Board';
+import Header from './Header';
 import ChooseTeam from './ChooseTeam';
-import { Container, Grid, Button, Progress, Segment, Input, Message } from 'semantic-ui-react';
+import { Container, Grid, Button, Progress, Input, Message } from 'semantic-ui-react';
 import firebase from 'firebase';
 import { DB_CONFIG } from '../Config';
 
@@ -15,29 +16,15 @@ class Game extends Component {
       this.database = this.app.database().ref().child(`${this.id}`);
     }
 
-    this.state = {
-      clueNumInput: "",
-      clueInput: "",
-      clue: "",
-      clueNum: "",
-      clueSubmitted: false,
-      blueTeam: true,
-      viewSelected: false,
-      squares: [""],
-      selected : [],
-      blueCount: 9,
-      redCount: 8,
-      playerView: true,
-      blueTurn: true,
-      deathSquareIndex: 999,
-      redSquaresIndices: [],
-      blueSquaresIndices: []
-    };
+    this.state = {};
 
     this.updateInputClue = this.updateInputClue.bind(this);
     this.updateInputClueNum = this.updateInputClueNum.bind(this);
   }
 
+  /*
+  * Pull the state from the database and set the state. Otherwise, create a new game
+  */
   componentDidMount(){
     this.database.on('value', snap => {
       if (snap.val() && snap.val().game){
@@ -97,10 +84,19 @@ class Game extends Component {
     })
   }
 
+  /*
+  * Closes the Database connection when closed
+  */
   componentWillUnmount(){
     this.app.delete();
   }
 
+  /*
+  * For each square clicked:
+  * 1. Check if we should disable the click and fast fail
+  * 2. Check if the turn needs to change if clues run out or wrong square selected
+  * 3. Add the clicked square to selected, then update the state and database
+  */
   handleClick(i) {
     const playerView = this.state.playerView;
     const clueSubmitted = this.state.clueSubmitted;
@@ -188,6 +184,7 @@ class Game extends Component {
     })
   }
 
+  //Passed as a callback to ChooseTeam, used to setState based on team and view selected
   handleChooseTeamClick(viewSelected, playerView, blueTeam){
     this.setState({viewSelected, playerView, blueTeam});
   }
@@ -206,7 +203,8 @@ class Game extends Component {
       const disabled = ((blueTurn && !blueTeam) || (!blueTurn && blueTeam)) ? true : false;
       const fontColor = (blueTurn) ? '#0D47A1' : '#E53935';
       const color = (blueTurn) ? 'blue' : 'red';
-
+      const team = (blueTeam) ? "Blue" : "Red";
+      const role = (playerView) ? "Agent" : "Spymaster";
       let status;
       let resetOrNext;
 
@@ -256,11 +254,7 @@ class Game extends Component {
       return (
         <div>
           <Container>
-            <Segment inverted={true} color={color} textAlign={"center"}>
-              <h1>
-                Code Names
-              </h1>
-            </Segment>
+            <Header label = {`${team} ${role}`} color = {color}/>
             <Grid className="gameInfo" verticalAlign={"top"} centered={true}>
               <Grid.Row columns={3} verticalAlign={"top"} style={{"marginBottom" : "2px"}}>
                 <Grid.Column>
@@ -297,6 +291,9 @@ class Game extends Component {
   }
 }
 
+/*
+* Determines the winner of the game if all squares for a team are selcted or if death square has been selected. Will lead to buttons being disabled.
+*/
 function calculateWinner(blueSquares, redSquares, selectedSquares, blueTurn, deathSquareIndex){
   let winner = false;
 
@@ -315,17 +312,19 @@ function calculateWinner(blueSquares, redSquares, selectedSquares, blueTurn, dea
   return winner;
 };
 
+/*
+* Shuffles the available words
+*/
 function shuffle(array) {
   let currentIndex = array.length, temporaryValue, randomIndex;
 
-  // While there remain elements to shuffle...
   while (0 !== currentIndex) {
 
-    // Pick a remaining element...
+    // Pick a remaining element
     randomIndex = Math.floor(Math.random() * currentIndex);
     currentIndex -= 1;
 
-    // And swap it with the current element.
+    // And swap it with the current element
     temporaryValue = array[currentIndex];
     array[currentIndex] = array[randomIndex];
     array[randomIndex] = temporaryValue;

@@ -1,22 +1,18 @@
-import React, { Component } from 'react';
-import { Container, Grid, Segment, Card, Image, Divider } from 'semantic-ui-react';
+import React from 'react';
+import { Container, Grid, Card, Image, Divider } from 'semantic-ui-react';
+import Header from './Header';
 
-class ChooseTeam extends Component {
+function ChooseTeam (props){
 
-  render() {
     return (
       <div>
         <Container>
-          <Segment inverted={true} textAlign="center">
-            <h1>
-              Code Names
-            </h1>
-          </Segment>
+          <Header label={"Code Names"} color="black"/>
           <Grid textAlign={"center"} padded={"horizontally"}>
             <Grid.Row><h1>Pick Your Team and Role</h1></Grid.Row>
             <Grid.Row columns={5} stretched={true}>
               <Grid.Column>
-                <Card onClick={()=>this.props.onClick(true, true, true)} floated={"left"} color="blue">
+                <Card onClick={()=>props.onClick(true, true, true)} floated={"left"} color="blue">
                   <Image src = 'https://appstickers-cdn.appadvice.com/1153735070/818875334/93fd18f6c12ea6344226f428d49878fe-3.png' size={"massive"}/>
                   <Card.Content>
                     <Card.Header className="cardHeader" textAlign="center">Agent</Card.Header>
@@ -25,7 +21,7 @@ class ChooseTeam extends Component {
                 </Card>
               </Grid.Column>
               <Grid.Column>
-                <Card onClick={()=>this.props.onClick(true, false, true)} floated={"left"} color="blue">
+                <Card onClick={()=>props.onClick(true, false, true)} floated={"left"} color="blue">
                   <Image src = 'https://appstickers-cdn.appadvice.com/1153735070/818875334/60df243593b6b5e4bf59bf1dce2aa5be-0.png' size={"massive"}/>
                   <Card.Content>
                     <Card.Header className="cardHeader" textAlign="center">Spymaster</Card.Header>
@@ -37,7 +33,7 @@ class ChooseTeam extends Component {
                 <Divider vertical>Or</Divider>
               </Grid.Column>
               <Grid.Column>
-                <Card onClick={()=>this.props.onClick(true, true, false)} floated={"right"} color="red">
+                <Card onClick={()=>props.onClick(true, true, false)} floated={"right"} color="red">
                   <Image src = 'https://appstickers-cdn.appadvice.com/1153735070/818875334/5acc6c1edb020629f9bb6cea6bdabb0c-7.png' size={"massive"}/>
                   <Card.Content>
                     <Card.Header className="cardHeader" textAlign="center">Agent</Card.Header>
@@ -46,7 +42,7 @@ class ChooseTeam extends Component {
                 </Card>
               </Grid.Column>
               <Grid.Column>
-                <Card onClick={()=>this.props.onClick(true, false, false)} floated={"right"} color="red">
+                <Card onClick={()=>props.onClick(true, false, false)} floated={"right"} color="red">
                   <Image src = 'https://appstickers-cdn.appadvice.com/1153735070/818875334/9e9f1a72fced69aa72d6202f06224f0b-4.png' size={"massive"}/>
                   <Card.Content>
                     <Card.Header className="cardHeader" textAlign="center">Spymaster</Card.Header>
@@ -59,7 +55,7 @@ class ChooseTeam extends Component {
         </Container>
       </div>
     );
-  }
+
 }
 
 export default ChooseTeam;

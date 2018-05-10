@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Board from './Board';
-import  { Container, Grid, Button, Progress, Segment } from 'semantic-ui-react';
+import Header from './Header';
+import  { Container, Grid, Button, Progress } from 'semantic-ui-react';
 import firebase from 'firebase';
 import { DB_CONFIG } from '../Config';
 
@@ -27,6 +28,9 @@ class OfflineGame extends Component {
     };
   }
 
+  /*
+  * Pull the state from the database and set the state. Otherwise, create a new game
+  */
   componentDidMount(){
     this.database.on('value', snap => {
       if (snap.val().offlineGame && snap.val().offlineGame){
@@ -79,10 +83,19 @@ class OfflineGame extends Component {
     })
   }
 
+  /*
+  * Closes the Database connection when closed
+  */
   componentWillUnmount(){
     this.app.delete();
   }
 
+  /*
+  * For each square clicked:
+  * 1. Check if we should disable the click and fast fail
+  * 2. Check if the turn needs to change if clues run out or wrong square selected
+  * 3. Add the clicked square to selected, then update the state and database
+  */
   handleClick(i) {
     const playerView = this.state.playerView;
     const blueSquares = this.state.blueSquaresIndices;
@@ -152,11 +165,7 @@ class OfflineGame extends Component {
     return (
       <div>
         <Container>
-          <Segment inverted={true} color={color} textAlign={"center"}>
-            <h1>
-              Code Names
-            </h1>
-          </Segment>
+          <Header label="Code Names" color = {color}/>
           <Grid className="gameInfo" verticalAlign={"top"} centered={true}>
             <Grid.Row columns={3} verticalAlign={"top"} style={{"marginBottom" : "2px"}}>
               <Grid.Column>
@@ -186,6 +195,9 @@ class OfflineGame extends Component {
   }
 }
 
+/*
+* Determines the winner of the game if all squares for a team are selcted or if death square has been selected. Will lead to buttons being disabled.
+*/
 function calculateWinner(blueSquares, redSquares, selectedSquares, blueTurn, deathSquareIndex){
   let winner = false;
 
@@ -204,17 +216,19 @@ function calculateWinner(blueSquares, redSquares, selectedSquares, blueTurn, dea
   return winner;
 };
 
+/*
+* Shuffles the available words
+*/
 function shuffle(array) {
   let currentIndex = array.length, temporaryValue, randomIndex;
 
-  // While there remain elements to shuffle...
   while (0 !== currentIndex) {
 
-    // Pick a remaining element...
+    // Pick a remaining element
     randomIndex = Math.floor(Math.random() * currentIndex);
     currentIndex -= 1;
 
-    // And swap it with the current element.
+    // And swap it with the current element
     temporaryValue = array[currentIndex];
     array[currentIndex] = array[randomIndex];
     array[randomIndex] = temporaryValue;
