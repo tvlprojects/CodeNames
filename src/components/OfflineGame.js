@@ -33,7 +33,7 @@ class OfflineGame extends Component {
   */
   componentDidMount(){
     this.database.on('value', snap => {
-      if (snap.val().offlineGame && snap.val().offlineGame){
+      if (snap.val() && snap.val().offlineGame){
         const snapshot = snap.val().offlineGame;
         this.setState({
           squares: snapshot.squares,
