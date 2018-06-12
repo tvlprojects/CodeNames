@@ -3,14 +3,14 @@ import './App.css';
 import Game from './components/Game';
 import OfflineGame from './components/OfflineGame';
 import Home from './components/Home';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { HashRouter, Route, Switch } from 'react-router-dom';
 
 class App extends Component {
 
   render(){
     return (
       <div>
-        <BrowserRouter basename={process.env.PUBLIC_URL}>
+        <HashRouter>
           <div>
             <Switch>
               <Route path="/:id/offline/" component= {OfflineGame} />
@@ -18,7 +18,7 @@ class App extends Component {
               <Route path="/" component={Home} />
             </Switch>
           </div>
-        </BrowserRouter>
+        </HashRouter>
       </div>
     )
   }

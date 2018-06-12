@@ -302,6 +302,10 @@ class Game extends Component {
 function calculateWinner(blueSquares, redSquares, selectedSquares, blueTurn, deathSquareIndex){
   let winner = false;
 
+  if (!selectedSquares || !blueSquares || !redSquares) {
+    return;
+  }
+
   if (selectedSquares.includes(deathSquareIndex) && blueTurn){
     winner = 'Blue';
   } else if (selectedSquares.includes(deathSquareIndex) && !blueTurn){

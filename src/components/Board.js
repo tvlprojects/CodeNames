@@ -5,7 +5,7 @@ import  { Grid } from 'semantic-ui-react';
 
 function Board (props){
 
-  function renderSquare(index, word) {
+    function renderSquare(index, word) {
       let highlightRed = props.redSquaresIndices.includes(index);
       let highlightBlue = props.blueSquaresIndices.includes(index);
 
@@ -29,16 +29,17 @@ function Board (props){
     let cells = [];
     let cellNumber = 0;
     const bank = props.bank;
-
-    for (let row = 0; row < 5; row++){
-      for (let col = 0; col < 5; col++){
-        cells.push(renderSquare(cellNumber, bank[cellNumber]));
-        cellNumber++;
+    if (bank) {
+      for (let row = 0; row < 5; row++){
+        for (let col = 0; col < 5; col++){
+          cells.push(renderSquare(cellNumber, bank[cellNumber]));
+          cellNumber++;
+        }
+        rows.push(<Grid.Row className="padded" key={row}>{cells}</Grid.Row>);
+        cells = [];
       }
-      rows.push(<Grid.Row className="padded" key={row}>{cells}</Grid.Row>);
-      cells = [];
     }
-
+    
     return (
       <div>
         <Grid className="board" columns={5} centered={true} verticalAlign="bottom">
