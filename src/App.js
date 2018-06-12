@@ -3,22 +3,22 @@ import './App.css';
 import Game from './components/Game';
 import OfflineGame from './components/OfflineGame';
 import Home from './components/Home';
-import { HashRouter, Route, Switch } from 'react-router-dom';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
 class App extends Component {
 
   render(){
     return (
       <div>
-        <HashRouter>
+        <BrowserRouter basename={process.env.PUBLIC_URL}>
           <div>
             <Switch>
-              <Route path="/offline/:id" component= {OfflineGame} />
-              <Route path="/:id" component = {Game}/>
+              <Route path="/:id/offline/" component= {OfflineGame} />
+              <Route path="/:id" component = {Game} />
               <Route path="/" component={Home} />
             </Switch>
           </div>
-        </HashRouter>
+        </BrowserRouter>
       </div>
     )
   }

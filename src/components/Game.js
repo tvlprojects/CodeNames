@@ -40,7 +40,9 @@ class Game extends Component {
           blueSquaresIndices: snapshot.blueSquaresIndices,
           clueSubmitted: snapshot.clueSubmitted,
           clue: snapshot.clue,
-          clueNum: snapshot.clueNum
+          clueNum: snapshot.clueNum,
+          clueNumInput: "",
+          clueInput: ""
         });
       } else {
         const wordBank = require("./wordBank.js");
@@ -157,17 +159,20 @@ class Game extends Component {
   onClueSubmit(e){
     const clueNum = this.state.clueNumInput;
     const clue = this.state.clueInput;
-
-    this.setState({
-      clueSubmitted: true,
-      clueInput: "",
-      clueNumInput: "",
-      clueNum: clueNum,
-      clue: clue
-    }, () => {
-      this.database.update({game : this.state });
-    });
-    e.preventDefault();
+    if(isClueValid(clue)) {
+      this.setState({
+        clueSubmitted: true,
+        clueInput: "",
+        clueNumInput: "",
+        clueNum: clueNum,
+        clue: clue
+      }, () => {
+        this.database.update({game : this.state });
+      });
+      e.preventDefault();
+    } else {
+      return;
+    }
   }
 
   updateInputClue(e) {
@@ -331,6 +336,16 @@ function shuffle(array) {
   }
 
   return array;
+}
+
+function isClueValid(clue) {
+  if (clue.includes(" ")){
+    return false;
+  }
+  if (!/^[a-zA-Z]+$/.test(clue)){
+    return false;
+  }
+  return true;
 }
 
 export default Game;

@@ -25,13 +25,13 @@ class Home extends Component {
     const submit = (
       <Container text>
         <Link to={`/${this.state.input}`}><Button size="massive" fluid={true} primary={true}>Enter Online</Button></Link>
-        <Link to={`/offline/${this.state.input}`}><Button size="massive" fluid= {true}>Enter Offline</Button></Link>
+        <Link to={`/${this.state.input}/offline`}><Button size="massive" fluid= {true}>Enter Offline</Button></Link>
       </Container>
     );
 
     return (
       <div>
-        <Container >
+        <Container>
           <Header label = "Code Names" color = "black"/>
           <Grid centered={true} padded={"horizontally"} stackable={true}>
             <form>
