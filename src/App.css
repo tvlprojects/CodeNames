@@ -38,7 +38,64 @@ h2 {
   font-size: 16px;
 }
 
-@media (min-width : 320px) and (max-width : 640px) {
+@media (min-width : 621px) and (max-width : 1000px) {
+
+  .board {
+    padding-left: 14px !important;
+    padding-right: 10px !important;
+  }
+
+  h1 {
+    font-size: 22px !important;
+  }
+
+  h2 {
+    font-size: 16px !important;
+  }
+
+  .progressBar .bar {
+    font-size: 12px !important;
+    height: 40px !important;
+  }
+
+  .padded {
+    padding-left: 0px !important;
+    padding-right: 1px !important;
+    padding-top: .5px !important;
+    padding-bottom: 0px !important;
+  }
+
+  .btn {
+    font-size: 16px !important;
+    background: #E8E8E8;
+    font-weight: bold;
+    height: 80px;
+    text-align: center !important;
+    width: 100%;
+    border-radius: 12px !important;
+  }
+
+  .gameinfoBtn {
+    width: 100% !important;
+    font-size: 12px !important;
+  }
+
+  .cardHeader {
+    font-size: 8px !important;
+  }
+
+  .cardDescription {
+    font-size: 8px !important;
+  }
+
+  .clue {
+    font-size: 16px !important;
+  }
+
+}
+
+
+@media (min-width : 320px) and (max-width : 620px) {
 
   .board {
     padding-left: 14px !important;
@@ -81,7 +138,7 @@ h2 {
   }
 
   .cardHeader {
-    font-size: 6px !important;
+    font-size: 4px !important;
   }
 
   .cardDescription {
