@@ -159,6 +159,7 @@ class Game extends Component {
   onClueSubmit(e){
     const clueNum = parseInt(this.state.clueNumInput, 10) + 1;
     const clue = this.state.clueInput;
+    e.preventDefault();
     if(isClueValid(clue)) {
       this.setState({
         clueSubmitted: true,
@@ -169,9 +170,11 @@ class Game extends Component {
       }, () => {
         this.database.update({game : this.state });
       });
-      e.preventDefault();
+
     } else {
-      return;
+      this.setState({
+        clueInput: "",
+      })
     }
   }
 
@@ -346,9 +349,11 @@ function isClueValid(clue) {
   if (clue.includes(" ")){
     return false;
   }
+
   if (!/^[a-zA-Z]+$/.test(clue)){
     return false;
   }
+
   return true;
 }
 
