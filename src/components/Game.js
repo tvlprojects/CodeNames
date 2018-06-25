@@ -157,7 +157,7 @@ class Game extends Component {
   }
 
   onClueSubmit(e){
-    const clueNum = this.state.clueNumInput;
+    const clueNum = parseInt(this.state.clueNumInput, 10) + 1;
     const clue = this.state.clueInput;
     if(isClueValid(clue)) {
       this.setState({
