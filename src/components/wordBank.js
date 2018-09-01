@@ -636,7 +636,6 @@ module.exports = [
   'Television',
   'Twang',
   'Twig',
-  'Twitterpated',
   'Type',
   'Unemployed',
   'Upgrade',

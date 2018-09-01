@@ -4,7 +4,7 @@ h2 {
 
 .btn {
   font-size: 22px !important;
-  background: #E8E8E8;
+  background: #e8e8e8;
   font-weight: bold;
   height: 125px;
   width: 95%;
@@ -38,8 +38,7 @@ h2 {
   font-size: 16px;
 }
 
-@media (min-width : 621px) and (max-width : 1000px) {
-
+@media (min-width: 621px) and (max-width: 1000px) {
   .board {
     padding-left: 14px !important;
     padding-right: 10px !important;
@@ -61,13 +60,13 @@ h2 {
   .padded {
     padding-left: 0px !important;
     padding-right: 1px !important;
-    padding-top: .5px !important;
+    padding-top: 0.5px !important;
     padding-bottom: 0px !important;
   }
 
   .btn {
     font-size: 16px !important;
-    background: #E8E8E8;
+    background: #e8e8e8;
     font-weight: bold;
     height: 80px;
     text-align: center !important;
@@ -91,12 +90,9 @@ h2 {
   .clue {
     font-size: 16px !important;
   }
-
 }
 
-
-@media (min-width : 320px) and (max-width : 620px) {
-
+@media (min-width: 320px) and (max-width: 620px) {
   .board {
     padding-left: 14px !important;
     padding-right: 10px !important;
@@ -118,13 +114,13 @@ h2 {
   .padded {
     padding-left: 0px !important;
     padding-right: 1px !important;
-    padding-top: .5px !important;
+    padding-top: 0.5px !important;
     padding-bottom: 0px !important;
   }
 
   .btn {
     font-size: 8px !important;
-    background: #E8E8E8;
+    background: #e8e8e8;
     font-weight: bold;
     height: 45px;
     text-align: center !important;
@@ -148,5 +144,4 @@ h2 {
   .clue {
     font-size: 10px !important;
   }
-
 }

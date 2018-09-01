@@ -1,30 +1,30 @@
 import React from 'react';
-import  { Button } from 'semantic-ui-react';
+import { Button } from 'semantic-ui-react';
 
-function Square (props){
+function Square(props) {
   let clicked = props.selected.includes(props.index);
   let color;
-  let style = {color: "black"};
+  let style = { color: 'black' };
 
   if (clicked) {
-    style={};
+    style = {};
     if (props.highlightBlue) {
-      color = "blue";
+      color = 'blue';
     } else if (props.highlightRed) {
-      color = "red";
-    } else if (props.deathSquareIndex === props.index){
-      color = "black";
+      color = 'red';
+    } else if (props.deathSquareIndex === props.index) {
+      color = 'black';
       clicked = false;
     }
   } else if (!props.playerView) {
-    if (props.highlightBlue){
-      style={color: "#0D47A1"};
+    if (props.highlightBlue) {
+      style = { color: '#0D47A1' };
     } else if (props.highlightRed) {
-      style={color: "#E53935"};
+      style = { color: '#E53935' };
     } else if (props.deathSquareIndex === props.index) {
-      style={color: "#FBC02D"};
+      style = { color: '#FBC02D' };
     } else {
-      style={color: "gray"}
+      style = { color: 'gray' };
     }
   }
 
@@ -33,7 +33,6 @@ function Square (props){
       <div>{props.value}</div>
     </Button>
   );
-
 }
 
 export default Square;
