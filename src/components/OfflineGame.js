@@ -29,6 +29,11 @@ class OfflineGame extends Component {
       redSquaresIndices: [2],
       blueSquaresIndices: [1]
     };
+
+    this.handleClick = this.handleClick.bind(this);
+    this.handleChangeView = this.handleChangeView.bind(this);
+    this.toggleTurn = this.toggleTurn.bind(this);
+    this.resetBoard = this.resetBoard.bind(this);
   }
 
   /*
@@ -52,7 +57,7 @@ class OfflineGame extends Component {
         const wordBank = require('./wordBank.js');
         const squares = shuffle(wordBank).slice(0, 25);
         let availableIndices = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24];
-        const deathSquareIndex = Math.floor(Math.random() * availableIndices.length);
+        const deathSquareIndex = generateRandomIndex(availableIndices.length);
         let blueSquaresIndices = [];
         let redSquaresIndices = [];
 
@@ -60,7 +65,7 @@ class OfflineGame extends Component {
           .slice(0, deathSquareIndex)
           .concat(availableIndices.slice(deathSquareIndex + 1));
         for (let i = 0; i < 9; i++) {
-          let blueSquareIndex = Math.floor(Math.random() * availableIndices.length);
+          let blueSquareIndex = generateRandomIndex(availableIndices.length);
           blueSquaresIndices.push(availableIndices[blueSquareIndex]);
           availableIndices = availableIndices
             .slice(0, blueSquareIndex)
@@ -68,7 +73,7 @@ class OfflineGame extends Component {
         }
 
         for (let i = 0; i < 8; i++) {
-          let redSquareIndex = Math.floor(Math.random() * availableIndices.length);
+          let redSquareIndex = generateRandomIndex(availableIndices.length);
           redSquaresIndices.push(availableIndices[redSquareIndex]);
           availableIndices = availableIndices
             .slice(0, redSquareIndex)
@@ -152,6 +157,10 @@ class OfflineGame extends Component {
     this.database.child('offlineGame').remove();
   }
 
+  handleChangeView() {
+    this.setState({ playerView: !this.state.playerView });
+  }
+
   render() {
     const playerView = this.state.playerView;
     const blueSquares = this.state.blueSquaresIndices;
@@ -167,13 +176,13 @@ class OfflineGame extends Component {
     if (winner) {
       status = winner + ' wins!';
       resetOrNext = (
-        <Button className="gameinfoBtn" floated="right" fluid={true} onClick={() => this.resetBoard()}>
+        <Button className="gameinfoBtn" floated="right" fluid={true} onClick={this.resetBoard}>
           Reset Board for new game
         </Button>
       );
     } else {
       resetOrNext = (
-        <Button className="gameinfoBtn" floated="right" fluid={true} onClick={() => this.toggleTurn()}>
+        <Button className="gameinfoBtn" floated="right" fluid={true} onClick={this.toggleTurn}>
           Next Turn
         </Button>
       );
@@ -217,7 +226,7 @@ class OfflineGame extends Component {
                   floated="right"
                   fluid={true}
                   color={color}
-                  onClick={() => this.setState({ playerView: !playerView })}
+                  onClick={this.handleChangeView}
                 >
                   Change to {view}
                 </Button>
@@ -229,7 +238,7 @@ class OfflineGame extends Component {
             blueSquaresIndices={blueSquares}
             redSquaresIndices={redSquares}
             deathSquareIndex={deathSquare}
-            onClick={i => this.handleClick(i)}
+            onClick={this.handleClick}
             selected={selected}
             bank={squares}
             playerView={playerView}
@@ -267,6 +276,10 @@ function calculateWinner(blueSquares, redSquares, selectedSquares, blueTurn, dea
   }
 
   return winner;
+}
+
+function generateRandomIndex(totalIndices) {
+  return Math.floor(Math.random() * totalIndices)
 }
 
 /*

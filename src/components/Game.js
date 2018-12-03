@@ -23,6 +23,12 @@ class Game extends Component {
 
     this.updateInputClue = this.updateInputClue.bind(this);
     this.updateInputClueNum = this.updateInputClueNum.bind(this);
+    this.handleClick = this.handleClick.bind(this);
+    this.handleChooseTeamClick = this.handleChooseTeamClick.bind(this);
+    this.handleChangeView = this.handleChangeView.bind(this);
+    this.onClueSubmit = this.onClueSubmit.bind(this);
+    this.toggleTurn = this.toggleTurn.bind(this);
+    this.resetBoard = this.resetBoard.bind(this);
   }
 
   /*
@@ -51,7 +57,7 @@ class Game extends Component {
         const wordBank = require('./wordBank.js');
         const squares = shuffle(wordBank).slice(0, 25);
         let availableIndices = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24];
-        const deathSquareIndex = Math.floor(Math.random() * availableIndices.length);
+        const deathSquareIndex = generateRandomIndex(availableIndices.length);
         let blueSquaresIndices = [];
         let redSquaresIndices = [];
 
@@ -59,7 +65,7 @@ class Game extends Component {
           .slice(0, deathSquareIndex)
           .concat(availableIndices.slice(deathSquareIndex + 1));
         for (let i = 0; i < 9; i++) {
-          let blueSquareIndex = Math.floor(Math.random() * availableIndices.length);
+          let blueSquareIndex = generateRandomIndex(availableIndices.length);
           blueSquaresIndices.push(availableIndices[blueSquareIndex]);
           availableIndices = availableIndices
             .slice(0, blueSquareIndex)
@@ -67,7 +73,7 @@ class Game extends Component {
         }
 
         for (let i = 0; i < 8; i++) {
-          let redSquareIndex = Math.floor(Math.random() * availableIndices.length);
+          let redSquareIndex = generateRandomIndex(availableIndices.length);
           redSquaresIndices.push(availableIndices[redSquareIndex]);
           availableIndices = availableIndices
             .slice(0, redSquareIndex)
@@ -119,7 +125,7 @@ class Game extends Component {
     const selected = this.state.selected;
     const blueTurn = this.state.blueTurn;
     const deathSquare = this.state.deathSquareIndex;
-    const clueNum = this.state.clueNum - 1;
+    const clueNum = this.state.clueNum;
     const blueTeam = this.state.blueTeam;
 
     /*
@@ -221,6 +227,10 @@ class Game extends Component {
     this.setState({ viewSelected, playerView, blueTeam });
   }
 
+  handleChangeView() {
+    this.setState({ playerView: !this.state.playerView });
+  }
+
   render() {
     if (this.state.viewSelected) {
       const playerView = this.state.playerView;
@@ -245,14 +255,14 @@ class Game extends Component {
       if (winner) {
         status = winner + ' wins!';
         resetOrNext = (
-          <Button className="gameinfoBtn" floated="right" fluid={true} onClick={() => this.resetBoard()}>
+          <Button className="gameinfoBtn" floated="right" fluid={true} onClick={this.resetBoard}>
             Reset Board for new game
           </Button>
         );
 
         let view = this.state.playerView ? 'Spymaster View' : 'Player View';
         changeView = (
-          <Button className="gameinfoBtn" floated="right" fluid={true} color={color} onClick={() => this.setState({ playerView: !playerView })}>
+          <Button className="gameinfoBtn" floated="right" fluid={true} color={color} onClick={this.handleChangeView}>
             Change to {view}
           </Button>
         );
@@ -264,7 +274,7 @@ class Game extends Component {
             disabled={disabled}
             floated="right"
             fluid={true}
-            onClick={() => this.toggleTurn()}
+            onClick={this.toggleTurn}
           >
             Next Turn
           </Button>
@@ -276,7 +286,7 @@ class Game extends Component {
             formOrClue = (
               <div>
                 <h2>Submit Clue</h2>
-                <form onSubmit={event => this.onClueSubmit(event)}>
+                <form onSubmit={this.onClueSubmit}>
                   <Input
                     type="text"
                     placeholder="Clue"
@@ -354,7 +364,7 @@ class Game extends Component {
               blueSquaresIndices={blueSquares}
               redSquaresIndices={redSquares}
               deathSquareIndex={deathSquare}
-              onClick={i => this.handleClick(i)}
+              onClick={this.handleClick}
               selected={selected}
               bank={squares}
               playerView={playerView}
@@ -363,7 +373,7 @@ class Game extends Component {
         </div>
       );
     } else {
-      return <ChooseTeam onClick={(i, j, k) => this.handleChooseTeamClick(i, j, k)} />;
+      return <ChooseTeam onClick={this.handleChooseTeamClick} />;
     }
   }
 }
@@ -399,6 +409,10 @@ function calculateWinner(blueSquares, redSquares, selectedSquares, blueTurn, dea
   }
 
   return winner;
+}
+
+function generateRandomIndex(totalIndices) {
+  return Math.floor(Math.random() * totalIndices)
 }
 
 /*
