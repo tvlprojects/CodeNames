@@ -318,11 +318,7 @@ class Game extends Component {
             formOrClue = <h2>Awaiting Clue...</h2>;
           }
         } else {
-
-          let header = `${this.state.totalGuesses} available guesses left with ${this.state.clue.toUpperCase()} as the clue (${this.state.clueNum} submitted)`;
-          if (this.state.totalGuesses === '1') {
-            header = `${this.state.totalGuesses} guess left with ${this.state.clue.toUpperCase()} as the clue (${this.state.clueNum} submitted)`;
-          }
+          let header = `${this.state.totalGuesses} available guess(es) left with ${this.state.clue.toUpperCase()} as the clue (${this.state.clueNum} submitted)`;
           formOrClue = (
             <Grid.Column textAlign="center">
               <h2>Clue</h2>
