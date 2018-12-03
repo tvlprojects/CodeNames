@@ -48,6 +48,7 @@ class Game extends Component {
           redSquaresIndices: snapshot.redSquaresIndices,
           blueSquaresIndices: snapshot.blueSquaresIndices,
           clueSubmitted: snapshot.clueSubmitted,
+          totalGuesses: snapshot.totalGuesses,
           clue: snapshot.clue,
           clueNum: snapshot.clueNum,
           clueNumInput: '',
@@ -90,6 +91,7 @@ class Game extends Component {
             clueInput: '',
             clue: '',
             clueNum: '',
+            totalGuesses: '',
             clueSubmitted: false,
             blueTurn: true,
             deathSquareIndex: deathSquareIndex,
@@ -125,7 +127,7 @@ class Game extends Component {
     const selected = this.state.selected;
     const blueTurn = this.state.blueTurn;
     const deathSquare = this.state.deathSquareIndex;
-    const clueNum = this.state.clueNum;
+    const totalGuesses = this.state.totalGuesses - 1;
     const blueTeam = this.state.blueTeam;
 
     /*
@@ -145,7 +147,7 @@ class Game extends Component {
       return;
     }
 
-    if (clueNum === 0) {
+    if (totalGuesses === 0) {
       this.setState({ blueTurn: !blueTurn, clueSubmitted: false });
     }
 
@@ -164,7 +166,7 @@ class Game extends Component {
     this.setState(
       {
         selected: selected.concat(i),
-        clueNum: clueNum
+        totalGuesses: totalGuesses
       },
       () => {
         this.database.update({ game: this.state });
@@ -173,7 +175,10 @@ class Game extends Component {
   }
 
   toggleTurn(i) {
-    this.setState({ blueTurn: !this.state.blueTurn, clueSubmitted: false }, () => {
+    this.setState({ blueTurn: !this.state.blueTurn,
+      clueSubmitted: false,
+      clueNum: ''
+    }, () => {
       this.database.update({ game: this.state });
     });
   }
@@ -189,6 +194,7 @@ class Game extends Component {
     if (isClueValid(clue)) {
       this.setState(
         {
+          totalGuesses: clueNum + 1,
           clueSubmitted: true,
           clueInput: '',
           clueNumInput: '',
@@ -312,10 +318,10 @@ class Game extends Component {
             formOrClue = <h2>Awaiting Clue...</h2>;
           }
         } else {
-          let totalGuesses = this.state.clueNum + 1;
-          let header = `${totalGuesses} available guesses left with ${this.state.clue.toUpperCase()} as the clue (${this.state.clueNum} submitted)`;
-          if (this.state.clueNum === '1') {
-            header = `${this.state.clueNum} guess left with ${this.state.clue.toUpperCase()} as the clue`;
+
+          let header = `${this.state.totalGuesses} available guesses left with ${this.state.clue.toUpperCase()} as the clue (${this.state.clueNum} submitted)`;
+          if (this.state.totalGuesses === '1') {
+            header = `${this.state.totalGuesses} guess left with ${this.state.clue.toUpperCase()} as the clue (${this.state.clueNum} submitted)`;
           }
           formOrClue = (
             <Grid.Column textAlign="center">
