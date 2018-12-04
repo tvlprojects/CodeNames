@@ -16,7 +16,7 @@ function Square(props) {
       color = 'black';
       clicked = false;
     }
-  } else if (!props.playerView) {
+  } else if (!props.playerView || props.isGameOver) {
     if (props.highlightBlue) {
       style = { color: '#0D47A1' };
     } else if (props.highlightRed) {

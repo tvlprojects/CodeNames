@@ -255,7 +255,6 @@ class Game extends Component {
       const role = playerView ? 'Agent' : 'Spymaster';
       let status;
       let resetOrNext;
-      let changeView;
       let formOrClue = '';
       const winner = calculateWinner(blueSquares, redSquares, selected, blueTurn, deathSquare);
       if (winner) {
@@ -263,13 +262,6 @@ class Game extends Component {
         resetOrNext = (
           <Button className="gameinfoBtn" floated="right" fluid={true} onClick={this.resetBoard}>
             Reset Board for new game
-          </Button>
-        );
-
-        let view = this.state.playerView ? 'Spymaster View' : 'Player View';
-        changeView = (
-          <Button className="gameinfoBtn" floated="right" fluid={true} color={color} onClick={this.handleChangeView}>
-            Change to {view}
           </Button>
         );
         formOrClue = <h2>Game Over!</h2>;
@@ -358,7 +350,6 @@ class Game extends Component {
                     <font color={fontColor}>{status}</font>
                   </h2>
                   {resetOrNext}
-                  {changeView}
                 </Grid.Column>
               </Grid.Row>
             </Grid>
@@ -370,6 +361,7 @@ class Game extends Component {
               selected={selected}
               bank={squares}
               playerView={playerView}
+              isGameOver={winner}
             />
           </Container>
         </div>

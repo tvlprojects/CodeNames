@@ -242,6 +242,7 @@ class OfflineGame extends Component {
             selected={selected}
             bank={squares}
             playerView={playerView}
+            isGameOver={winner}
           />
         </Container>
       </div>

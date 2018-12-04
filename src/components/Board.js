@@ -19,6 +19,7 @@ function Board(props) {
           selected={props.selected}
           deathSquareIndex={props.deathSquareIndex}
           playerView={props.playerView}
+          isGameOver={props.isGameOver}
         />
       </Grid.Column>
     );
