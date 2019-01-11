@@ -22,7 +22,6 @@ OR
 2. Go to the directory, and run "npm install"
 3. Once completed, run "npm start"
 
-
 # Screenshots
 
 ### Home Page to Select Unique Game Id
